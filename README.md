@@ -1,2 +1,5 @@
 # Stock
-This is an exercise fo RIA using angular.js
+This project is an exercise to get familiar with RIA.
+For this aim we used:
+- Maven
+- Angular.js
