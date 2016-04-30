@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ir.stock</groupId>
   <artifactId>Stock</artifactId>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Stock</name>
+  <name>Stock Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
@@ -15,4 +15,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <finalName>Stock</finalName>
+  </build>
 </project>
