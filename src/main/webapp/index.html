@@ -45,10 +45,13 @@
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">بخش کاربری <span class="caret"></span></a>
 						  <ul class="dropdown-menu">
 						    <li><a href="#">داشبورد</a></li>
-						<li><a href="#">سرمایه گذاری</a></li>
-						<li><a href="#">فروش سهام</a></li>
+								<li><a href="#">سرمایه گذاری</a></li>
+								<li><a href="#">فروش سهام</a></li>
 						    <li role="separator" class="divider"></li>
-						    <li><a href="#">ورود</a></li>
+								<li>
+									<!-- Trigger the modal with a button -->
+									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">ورود</button>
+								</li>
 						    <li><a href="#">خروج</a></li>
 						  </ul>
 						</li>
@@ -114,8 +117,41 @@
     
     
 		<h1>سامانه خرید و فروش بورس و اوراق بهادار</h1>
-		
-		
+
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal">&times;</button>
+				    <h4 class="modal-title">ورود کاربران</h4>
+				  </div>
+				  <div class="modal-body">
+				    <form class="form-signin">
+						  <h2 class="form-signin-heading">لطفا نام کاربری و رمز عبور خود را وارد کنید.</h2>
+						  <label for="inputEmail" class="sr-only">نام کاربری</label>
+						  <input type="text" id="inputId" class="form-control" placeholder="ID" required autofocus>
+						  <label for="inputPassword" class="sr-only">رمز عبور</label>
+						  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+						  <div class="checkbox">
+						    <label>
+						      <input type="checkbox" value="remember-me">مرا به خاطر بسپار</label>
+						  </div>
+						  <button class="btn btn-lg btn-primary btn-block" type="submit">ورود</button>
+						</form>
+				  </div>
+				  <div class="modal-footer">
+				  	<p>کاربر جدید هستید؟ همین الان
+				  		<a href="#">ثبت نام </a>کنید.
+				  	</p>
+				  </div>
+				</div>
+
+			</div>
+		</div>
+
 	  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	  <!-- Include all compiled plugins (below), or include individual files as needed -->
