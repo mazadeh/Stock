@@ -25,6 +25,10 @@ body {
   height: 250px;
 }
 
+input.form-control
+{
+	margin: 5px;
+}
 
 @media (min-width: 768px)
 {

@@ -48,10 +48,8 @@
 								<li><a href="#">سرمایه گذاری</a></li>
 								<li><a href="#">فروش سهام</a></li>
 						    <li role="separator" class="divider"></li>
-								<li>
-									<!-- Trigger the modal with a button -->
-									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">ورود</button>
-								</li>
+								<li><a data-toggle="modal" data-target="#signInModal" href="#signInModal">ورود</a></li>
+								<li><a data-toggle="modal" data-target="#signUpModal" href="#signUpModal">ثبت نام</a></li>
 						    <li><a href="#">خروج</a></li>
 						  </ul>
 						</li>
@@ -118,11 +116,9 @@
     
 		<h1>سامانه خرید و فروش بورس و اوراق بهادار</h1>
 
-		<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog">
+		<!-- Sign In Modal -->
+		<div id="signInModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
-
-				<!-- Modal content-->
 				<div class="modal-content">
 				  <div class="modal-header">
 				    <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -131,7 +127,7 @@
 				  <div class="modal-body">
 				    <form class="form-signin">
 						  <h2 class="form-signin-heading">لطفا نام کاربری و رمز عبور خود را وارد کنید.</h2>
-						  <label for="inputEmail" class="sr-only">نام کاربری</label>
+						  <label for="inputId" class="sr-only">نام کاربری</label>
 						  <input type="text" id="inputId" class="form-control" placeholder="ID" required autofocus>
 						  <label for="inputPassword" class="sr-only">رمز عبور</label>
 						  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
@@ -144,11 +140,38 @@
 				  </div>
 				  <div class="modal-footer">
 				  	<p>کاربر جدید هستید؟ همین الان
-				  		<a href="#">ثبت نام </a>کنید.
+				  		<a data-toggle="modal" data-target="#signUpModal" href="#signUpModal">ثبت نام </a> کنید!
 				  	</p>
 				  </div>
 				</div>
-
+			</div>
+		</div>
+		
+		<!-- Sign Up Modal -->
+		<div id="signUpModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal">&times;</button>
+				    <h4 class="modal-title">ثبت نام کاربران جدید</h4>
+				  </div>
+				  <div class="modal-body">
+				    <form class="form-signin">
+						  <h2 class="form-signin-heading">اطلاعات زیر را وارد کنید.</h2>
+						  <label for="inputEmail" class="sr-only">نام کاربری</label>
+						  <input type="text" id="inputId" class="form-control" placeholder="ID" required autofocus>
+						  <label for="inputPassword" class="sr-only">رمز عبور</label>
+						  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+						  <label for="inputConfirmPassword" class="sr-only">تکرار رمز عبور</label>
+						  <input type="password" id="inputPassword" class="form-control" placeholder="Confirm Password" required>
+						  <label for="inputName" class="sr-only">نام</label>
+						  <input type="text" id="inputName" class="form-control" placeholder="First Name" required>
+						  <label for="inputLastName" class="sr-only">نام خانوادگی</label>
+						  <input type="text" id="inputLastName" class="form-control" placeholder="Last Name" required>
+						  <button class="btn btn-lg btn-primary btn-block" type="submit">ثبت نام</button>
+						</form>
+				  </div>
+				</div>
 			</div>
 		</div>
 
