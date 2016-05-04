@@ -27,7 +27,8 @@ body {
 
 input.form-control
 {
-	margin: 5px;
+	width: 50%;
+	margin-bottom: 5px;
 }
 
 @media (min-width: 768px)

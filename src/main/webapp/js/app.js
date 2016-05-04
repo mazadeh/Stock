@@ -1,21 +1,17 @@
 (function(){
 
-var app = angular.module('store', []);
+	var app = angular.module('stock', []);
 
-app.controller('StoreController', function(){
-	this.product = gem;
-	this.address = arraytext;
-});
+	var Users;
 
-var gem = {
-	name: 'Dodecahedron',
-	price: 2.95,
-	description: '. . .',
-}
-
-var myloc = window.location.href;
-var locarray = myloc.split("/");
-delete locarray[(locarray.length-1)];
-var arraytext = locarray.join("/");
-
+	app.controller('StockController', ['$http', function($http){
+		var usersCtrl = this;
+		this.users = [];
+	
+		$http.get('http://localhost:3000/users').success(function(pollsData) {
+		    usersCtrl.users = pollsData;
+		});
+		
+	}]);
+	
 })();
