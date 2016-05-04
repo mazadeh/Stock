@@ -1,0 +1,46 @@
+{
+  "symbols": [
+    "تیر و تخته آسیا",
+    "چپر چلاغ مهر ایران",
+    "اسکلان روشن دل",
+    "ماشین سازی پایتخت",
+    "کافه رستوران سربند"
+  ],
+  "users": [
+    {
+      "id": "1",
+      "firstName": "admin",
+      "lastName": "admin",
+      "password": "password",
+      "depositedAmount": 0,
+      "shareList": [],
+      "isAdmin": true
+    },
+    {
+      "id": "2",
+      "firstName": "محمد",
+      "lastName": "آزاده",
+      "password": "۱۲۳۴",
+      "depositedAmount": 0,
+      "shareList": []
+    },
+    {
+      "id": "3",
+      "firstName": "ارغوان",
+      "lastName": "محمدحسنی",
+      "password": "۱۲۳۴",
+      "depositedAmount": 0,
+      "shareList": []
+    }
+  ],
+  "requests": [
+    {
+      "id": "1",
+      "userId": 1,
+      "symbol": "تیر و تخته آسیا",
+      "price": 1000,
+      "quantity": 100,
+      "type": "GTC"
+    }
+  ]
+}
