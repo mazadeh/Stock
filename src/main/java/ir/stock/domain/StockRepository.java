@@ -1,8 +1,11 @@
 package ir.stock.domain;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.Collection;
 
 /**
  * Stock Repository
@@ -45,9 +48,10 @@ public class StockRepository
 		return customerList.keySet();
 	}
 	
-	public static Map<Integer, Customer> getCustomerList()
+	public static List<Customer> getCustomerList()
 	{
-		return customerList;
+		Collection<Customer> customers = customerList.values();
+		return new ArrayList<Customer>(customers);
 	}
 	
 	public static int getCustomerSize()

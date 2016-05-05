@@ -26,7 +26,7 @@ public class GetCustomer extends HttpServlet {
 		
 		if (id == null || id.equals(""))
 		{
-			Map<Integer, Customer> customerList = StockRepository.getCustomerList();
+			List<Customer> customerList = StockRepository.getCustomerList();
 			out.print(gson.toJson(customerList));
 		}
 		else

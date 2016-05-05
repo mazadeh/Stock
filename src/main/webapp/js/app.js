@@ -8,7 +8,7 @@
 		var usersCtrl = this;
 		this.users = [];
 	
-		$http.get('http://localhost:8080/stock/customer/get?id=1').success(function(usersData) {
+		$http.get('http://localhost:8080/stock/customer/get').success(function(usersData) {
 		    usersCtrl.users = usersData;
 		    console.log(usersData);
 		});
