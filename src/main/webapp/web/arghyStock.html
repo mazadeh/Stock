@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html ng-app="stock" lang="fa">
+<html ng-app="arghyStock" lang="fa">
 	<head>
 		<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>سامانه معاملات بورس و اوراق بهادارد</title>
-    <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/stock.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <title>سامانه معاملات بورس و اوراق بهادارد</title>
+	    <!-- Bootstrap -->
+	    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	    <link rel="stylesheet" type="text/css" href="../css/stock.css">
+	    <!-- Favicon -->
+	    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 	</head>
 	<body>
 		<div class="navbar-wrapper">
@@ -169,7 +169,7 @@
 			</div>
 		</div>
 		
-		<div class="table-responsive col-md-6" ng-controller="StockController as stock">
+	<div class="table-responsive col-md-6" ng-controller="StockController as stock">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -192,12 +192,12 @@
       </table>
     </div>
     
-    <div class="container" ng-controller="StockController as stock">
+    <div class="container" ng-controller="StockController as stock" >
 	    <h2>Symbols</h2>
 
 	    <div ng-repeat="symbol in stock.symbols">
 		   <div class="row poll-item" ng-click="stock.symbolClicked(symbol.id)">
-		       <div class="col-xs-5">
+		       <div class="col-xs-5" dir="rtl">
 		           <h3>{{symbol.name}}</h3>
 		           <h5>مشاهده ی مشخصات نماد</h5>
 		           <table class="table table-striped" ng-show="stock.isSelected(symbol.id)">
@@ -214,20 +214,107 @@
 					</tr>
 				    </tbody>
 		           </table>
+		           <li ng-show="stock.isSelected(symbol.id)"><a data-toggle="modal" data-target="#BuyModal" href="#BuyModal" >خرید نماد</a></li>
+		           <li ng-show="stock.isSelected(symbol.id)"><a data-toggle="modal" data-target="#SellModal" href="#SellModal" >فروش نماد</a></li>
 		       </div>
-		       <div class="col-xs-1 pull-right" ng-show="stock.isSelected(symbol.id)">
-		           <img src="up.png" width="20px" ng-click="stock.collapse($event)"/>
-		       </div>
+		        
+	          <div class="col-xs-1 pull-right" ng-show="stock.isSelected(symbol.id)">
+	              <img src="../images/up.png" width="20px" ng-click="stock.collapse($event)"/>
+	          </div>
+	          
 		   </div>
 		   <hr/>
+		   
 	    </div>
 	</div>
+	
+	<div id="BuyModal" class="modal fade" role="dialog" ng-controller="CreateController as createCtrl">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+			  <div class="modal-header">
+			   <button type="button" class="close" data-dismiss="modal">&times;</button>
+			   <h4 class="modal-title">خرید نماد</h4>
+			  </div>
+			  
+			  <div class="modal-body" style="padding: 30px">
+			   <form name="buyForm" role="form" class="form-horizontal" novalidate>
+				  <div class="form-group">
+				      <label for="amount" class="control-label">مقدار نماد برای خرید</label>
+				      <input type="text" 
+				             name="amount" 
+				             class="form-control" 
+				             id="amount" 
+				             ng-model="amount" 
+				             placeholder="مقدار موردنظر" required/>
+				  </div>
+				  <div class="form-group">
+				      <label for="id" class="control-label">شناسه ی کاربری</label>
+				      <input type="text" 
+				             name="id"
+				             class="form-control" 
+				             id="id" 
+				             ng-model="id" 
+				             placeholder="شناسه ی کاربری" required/>
+			  	  </div>
+			  </div>
+			  <div class="modal-footer">
+			   <button class="btn btn-success" type="submit" ng-click="buyForm.createRequest()">ثبت خرید</button>
+			 </div>
+			</div>
+		</div>
+	</div>
+	<div id="SellModal" class="modal fade" role="dialog" ng-controller="CreateController as createCtrl">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+			  <div class="modal-header">
+			   <button type="button" class="close" data-dismiss="modal">&times;</button>
+			   <h4 class="modal-title">فروش نماد</h4>
+			  </div>
+			  
+			  <div class="modal-body" style="padding: 30px">
+			   <form name="sellForm" role="form" class="form-horizontal" novalidate>
+				  <div class="form-group">
+				      <label for="amount" class="control-label">مقدار نماد برای فروش</label>
+				      <input type="text" 
+				             name="amount" 
+				             class="form-control" 
+				             id="amount" 
+				             ng-model="amount" 
+				             placeholder="مقدار موردنظر" required/>
+				  </div>
+				  <div class="form-group">
+				      <label for="price" class="control-label">قیمت نماد برای فروش</label>
+				      <input type="text" 
+				             name="price"
+				             class="form-control" 
+				             id="price" 
+				             ng-model="price" 
+				             placeholder="قیمت موردنظر" required/>
+			  	  </div>
+				  <div class="form-group">
+				      <label for="id" class="control-label">شناسه ی کاربری</label>
+				      <input type="text" 
+				             name="id"
+				             class="form-control" 
+				             id="id" 
+				             ng-model="id" 
+				             placeholder="شناسه ی کاربری" required/>
+			  	  </div>
+			  </div>
+			  <div class="modal-footer">
+			   <button class="btn btn-success" type="submit" ng-click="sellForm.createRequest()">ثبت فروش</button>
+			 </div>
+			</div>
+		</div>
+	</div>
+	
+	
     
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	  <script src="../lib/jquery.min.js"></script>
 	  <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../lib/angular.min.js"></script>
 		<script type="text/javascript" src="../lib/angular-messages.min.js"></script>
-		<script type="text/javascript" src="../js/app.js"></script>
+		<script type="text/javascript" src="../js/arghyApp.js"></script>
 	</body>
 </html>
