@@ -1,6 +1,6 @@
 (function(){
 
-	var app = angular.module('stock', []);
+	var app = angular.module('arghyStock', []);
 	var Users;
 
 	app.controller('StockController', ['$http', function($http){
@@ -26,8 +26,12 @@
             return id === this.selected;
         };
 		
-		
+	   this.collapse = function($event) {
+            this.selected = null;
+            $event.stopPropagation();
+        };
 		
 	}]);
+	
 	
 })();
