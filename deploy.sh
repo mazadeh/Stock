@@ -3,6 +3,6 @@ if [ -z "$CATALINA_HOME" ]; then
     exit 1
 fi  
 
-APP_CONTEXT=Stock
+APP_CONTEXT=stock
 
 sudo cp target/$APP_CONTEXT.war $CATALINA_HOME/webapps/
