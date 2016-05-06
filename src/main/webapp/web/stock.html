@@ -11,14 +11,16 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 	</head>
-	<body>
+	<body ng-controller="StockController as stockCtrl">
 		<div class="navbar-wrapper">
 			<nav class="navbar navbar-default navbar-inverse">
 				<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+						<!--
 						<span class="control-label">Toggle navigation</span>
+						-->
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -26,10 +28,13 @@
 					<a class="navbar-brand" href="#">
 						<img alt="Brand" src="../images/logo.ico">
 					</a>
+					<div class="nav navbar-nav navbar-brand">
+            <a href="./">سلام {{stockCtrl.currentUser.firstname}}</a>
+          </div>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<div class="collapse navbar-collapse" id="navbar-collapse-1">
 				
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">صفحه اصلی</a></li>
@@ -65,7 +70,7 @@
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item active">
-          <img class="first-slide" src="???" alt="First slide">
+          <img class="first-slide" src="../images/carousel.gif" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Example headline.</h1>
@@ -75,7 +80,7 @@
           </div>
         </div>
         <div class="item">
-          <img class="second-slide" src="???" alt="Second slide">
+          <img class="second-slide" src="../images/carousel.gif" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Another example headline.</h1>
@@ -85,7 +90,7 @@
           </div>
         </div>
         <div class="item">
-          <img class="third-slide" src="???" alt="Third slide">
+          <img class="third-slide" src="../images/carousel.gif" alt="Third slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>One more for good measure.</h1>
@@ -117,12 +122,12 @@
 				    <h4 class="modal-title">ورود کاربران</h4>
 				  </div>
 				  <div class="modal-body">
-				    <form class="form-signin" ng-controller="FormController as signInCtrl" ng-submit="signInCtrl.signIn()" novalidate>
+				    <form class="form-signin" ng-submit="stockCtrl.signIn()">
 						  <h2 class="form-signin-heading">لطفا نام کاربری و رمز عبور خود را وارد کنید.</h2>
 						  <label for="inputId" class="control-label">نام کاربری</label>
-						  <input type="text" id="inputId" ng-model="signInCtrl.customer.id" class="form-control" placeholder="ID" required autofocus>
-						  <label for="inputPassword" class="control-label">رمز عبور</label>
-						  <input type="password" id="inputPassword" ng-model="signInCtrl.customer.password" class="form-control" placeholder="Password" required>
+						  <input type="text" id="inputId" ng-model="stockCtrl.currentUser.id" class="form-control" placeholder="ID" required autofocus>
+						  <label for="inputPassword" class="control-label">گذرواژه</label>
+						  <input type="password" id="inputPassword" ng-model="stockCtrl.currentUser.password" class="form-control" placeholder="Password" required>
 						  <div class="checkbox">
 						    <label class="control-label">
 						    	<input type="checkbox" value="remember-me">
@@ -133,6 +138,8 @@
 						</form>
 				  </div>
 				  <div class="modal-footer">
+				  	<div id="signInModalError" class="text-warning">
+				  	</div>
 				  	<p>کاربر جدید هستید؟ همین الان
 				  		<a data-toggle="modal" data-target="#signUpModal" href="#signUpModal">ثبت نام </a> کنید!
 				  	</p>
@@ -169,7 +176,7 @@
 			</div>
 		</div>
 		
-		<div class="table-responsive col-md-6" ng-controller="StockController as stock">
+		<div class="table-responsive col-md-6">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -181,7 +188,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="user in stock.users">
+          <tr ng-repeat="user in stockCtrl.users">
 	          <td>{{user.id}}</td>
             <td>{{user.firstname}}</td>
             <td>{{user.lastname}}</td>
@@ -191,20 +198,6 @@
         </tbody>
       </table>
     </div>
-    
-    <iframe name="temp-frame"></iframe>
-    
-		<form name="reviewForm" ng-controller="FormController as reviewCtrl" ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" > <!-- use novalidate -->
-			<select ng-model="reviewCtrl.review.stars" required>
-				<option value="1">1 star</option>
-			</select>
-			{{ reviewCtrl.review.author }}
-			<textarea name="body" ng-model="reviewCtrl.review.body" required ></textarea>
-			<label>by:</label>
-			<input name="author" ng-model="reviewCtrl.review.author" type="email" required />
-			<div> reviewForm is {{reviewForm.$valid}} </div>
-			<input type="submit" value="Submit" />
-		</form>
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	  <script src="../lib/jquery.min.js"></script>

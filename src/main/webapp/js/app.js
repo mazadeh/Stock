@@ -2,57 +2,47 @@
 
 	var app = angular.module('stock', []);
 
-	var Users;
-	
-	var stockCtrl = this;
-
 	app.controller('StockController', ['$http', function($http){
-		var usersCtrl = this;
+		var stockCtrl = this;
 		this.users = [];
+		this.currentUser = {firstname: 'میهمان'};
 	
 		$http.get('http://localhost:8080/stock/customer/get').success(function(usersData) {
-		    usersCtrl.users = usersData;
+		    stockCtrl.users = usersData;
 		    console.log(usersData);
 		});
 		
-	}]);
-	
-	app.controller('FormController', ['$http', function($http){
-		
-		var tmp = this;
-		var customer = {};
-		this.addReview = function(product)
-		{
-			console.log(tmp.review);
-		}
-		
 		this.signIn = function()
 		{
-			console.log('login: ');
-			console.log(tmp.customer);
+			//console.log('login: ');
+			//console.log(stockCtrl.currentUser);
 			$http({
-				method: 'GET',
+				method: 'POST',
 				url: 'http://localhost:8080/stock/customer/get', 
-		    params: { id: tmp.customer.id }
+		    params: { id: stockCtrl.currentUser.id }
 				}).then(function(response) {
 					var user = response.data;
 					if (user === 'null')
 					{
 						console.log('Customer does not exist!');
+						var element = document.getElementById('signInModalError');
+						element.innerHTML = 'چنین کاربری تعریف نشده است!';
 					}
-					else if (tmp.customer.password === user.password)
+					else if (stockCtrl.currentUser.password === user.password)
 					{
-						tmp.customer = user;
-						console.log('Hello ' + tmp.customer.firstname);
+						stockCtrl.currentUser = user;
+						console.log('Hello ' + stockCtrl.currentUser.firstname);
+						$('#signInModal').modal('hide');
 					}
 					else
 					{
 						console.log('Wrong password!');
+						var element = document.getElementById('signInModalError');
+						element.innerHTML = 'گذرواژه صحیح نمی باشد!';
 					}
 					// alert(response);
-					console.log(user);
+					//console.log(user);
 			});
 		}
 	}]);
-	
 })();
