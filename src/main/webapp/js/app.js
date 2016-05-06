@@ -58,6 +58,7 @@
 					if (response.data.hasOwnProperty('id'))
 					{
 						stockCtrl.currentUser = response.data;
+						stockCtrl.users.push(stockCtrl.currentUser);
 						$('#signUpModal').modal('hide');
 					}
 					else
