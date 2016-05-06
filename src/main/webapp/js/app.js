@@ -42,6 +42,39 @@
 					}
 					// alert(response);
 					//console.log(user);
+					console.log(response);
+			});
+		}
+		
+		this.signUp = function()
+		{
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/customer/add',
+		    params: { id: stockCtrl.currentUser.id , password: stockCtrl.currentUser.password ,
+		    					firstname: stockCtrl.currentUser.firstname , lastname: stockCtrl.currentUser.lastname }
+				}).then(function(response) {
+					console.log(response);
+					if (response.data.hasOwnProperty('id'))
+					{
+						stockCtrl.currentUser = response.data;
+						$('#signUpModal').modal('hide');
+					}
+					else
+					{
+						var ul = document.createElement('ul');
+						for (var error in response.data)
+						{
+							var li = document.createElement('li');
+							var errText = document.createTextNode(response.data[error]);
+							li.appendChild(errText);
+							ul.appendChild(li);
+						}
+
+						var element = document.getElementById("signUpModalError");
+						element.innerHTML = '';
+						element.appendChild(ul);
+					}
 			});
 		}
 	}]);

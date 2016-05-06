@@ -157,20 +157,24 @@
 				    <h4 class="modal-title">ثبت نام کاربران جدید</h4>
 				  </div>
 				  <div class="modal-body">
-				    <form class="form-signin" method="GET" action="http://localhost:8080/stock/customer/add" target="temp-frame" novalidate>
+				    <form class="form-signin" ng-submit="stockCtrl.signUp()" novalidate>
 						  <h2 class="form-signin-heading">اطلاعات زیر را وارد کنید.</h2>
 						  <label for="inputId" class="control-label">نام کاربری</label>
-						  <input name="id" type="text" id="inputId" class="form-control" placeholder="ID" required autofocus>
+						  <input name="id" type="text" id="inputId" ng-model="stockCtrl.currentUser.id" class="form-control" placeholder="ID" required autofocus>
 						  <label for="inputName" class="control-label">نام</label>
-						  <input name="firstname" type="text" id="inputName" class="form-control" placeholder="First Name" required>
+						  <input name="firstname" type="text" id="inputName" ng-model="stockCtrl.currentUser.firstname" class="form-control" placeholder="First Name" required>
 						  <label for="inputLastName" class="control-label">نام خانوادگی</label>
-						  <input name="lastname" type="text" id="inputLastName" class="form-control" placeholder="Last Name" required>
-						  <label for="inputPassword" class="control-label">رمز عبور</label>
-						  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-						  <label for="inputConfirmPassword" class="control-label">تکرار رمز عبور</label>
+						  <input name="lastname" type="text" id="inputLastName" ng-model="stockCtrl.currentUser.lastname" class="form-control" placeholder="Last Name" required>
+						  <label for="inputPassword" class="control-label">گذرواژه</label>
+						  <input type="password" id="inputPassword" ng-model="stockCtrl.currentUser.password" class="form-control" placeholder="Password" required>
+						  <label for="inputConfirmPassword" class="control-label">تکرار گذرواژه</label>
 						  <input type="password" id="inputPassword" class="form-control" placeholder="Confirm Password" required>
 						  <button type="submit" class="btn btn-lg btn-primary btn-block">ثبت نام</button>
 						</form>
+				  </div>
+				  <div class="modal-footer">
+				  	<div id="signUpModalError" class="text-warning">
+				  	</div>
 				  </div>
 				</div>
 			</div>

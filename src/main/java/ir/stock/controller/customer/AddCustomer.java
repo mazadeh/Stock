@@ -17,6 +17,9 @@ public class AddCustomer extends HttpServlet {
 		Gson gson = new Gson();
 		Customer customer;
 		
+		response.setContentType("text/html");
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		
 		boolean hasError = false;
 		List<String> errMessages = new ArrayList<String>();
 		
@@ -41,21 +44,31 @@ public class AddCustomer extends HttpServlet {
 		}
 		if (firstName == null || firstName.equals(""))
 		{
-			errMessages.add("Firstname could not be empty.");
+			errMessages.add("Firstname could not be empty");
 			hasError = true;
 		}
 		if (lastName == null || lastName.equals(""))
 		{
-			errMessages.add("Lastname could not be empty.");
+			errMessages.add("Lastname could not be empty");
 			hasError = true;
 		}
 		
+		int newId = 0;
 		if (!hasError)
 		{
-			int newId = Integer.parseInt(id);
-			
+			 newId = Integer.parseInt(id);
 			if (StockRepository.getCustomer(newId) != null)
-				newId = StockRepository.getCustomerSize() + 1;
+			{
+				/*************** New User ID Generator *******************
+				if (StockRepository.getCustomer(newId) != null)
+					newId = StockRepository.getCustomerSize() + 1;
+				*********************************************************/
+				errMessages.add("ID is repetetive.");
+				hasError = true;
+			}
+		}
+		if (!hasError)
+		{
 			customer = new Customer(newId, password, firstName, lastName);
 			StockRepository.addCustomer(customer);
 			out.print(gson.toJson(customer));
