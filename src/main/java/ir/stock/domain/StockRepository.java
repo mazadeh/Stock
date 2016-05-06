@@ -20,10 +20,10 @@ public class StockRepository
 	static 
 	{
 		customerList = new HashMap<Integer, Customer>();
-		admin = new Customer(1, "Admin", "Administrator");
+		admin = new Customer(1, "password", "Admin", "Administrator");
 		admin.setAdmin(true);
 		customerList.put(1, admin);
-		admin2 = new Customer(2, "Mohammad", "Azadeh");
+		admin2 = new Customer(2, "pass", "Mohammad", "Azadeh");
 		admin2.setAdmin(true);
 		customerList.put(2, admin2);
 	}

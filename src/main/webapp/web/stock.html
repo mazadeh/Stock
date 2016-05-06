@@ -117,12 +117,12 @@
 				    <h4 class="modal-title">ورود کاربران</h4>
 				  </div>
 				  <div class="modal-body">
-				    <form class="form-signin">
+				    <form class="form-signin" ng-controller="FormController as signInCtrl" ng-submit="signInCtrl.signIn()" novalidate>
 						  <h2 class="form-signin-heading">لطفا نام کاربری و رمز عبور خود را وارد کنید.</h2>
 						  <label for="inputId" class="control-label">نام کاربری</label>
-						  <input type="text" id="inputId" class="form-control" placeholder="ID" required autofocus>
+						  <input type="text" id="inputId" ng-model="signInCtrl.customer.id" class="form-control" placeholder="ID" required autofocus>
 						  <label for="inputPassword" class="control-label">رمز عبور</label>
-						  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+						  <input type="password" id="inputPassword" ng-model="signInCtrl.customer.password" class="form-control" placeholder="Password" required>
 						  <div class="checkbox">
 						    <label class="control-label">
 						    	<input type="checkbox" value="remember-me">
@@ -150,7 +150,7 @@
 				    <h4 class="modal-title">ثبت نام کاربران جدید</h4>
 				  </div>
 				  <div class="modal-body">
-				    <form class="form-signin" method="GET" action="http://localhost:8080/stock/customer/add">
+				    <form class="form-signin" method="GET" action="http://localhost:8080/stock/customer/add" target="temp-frame" novalidate>
 						  <h2 class="form-signin-heading">اطلاعات زیر را وارد کنید.</h2>
 						  <label for="inputId" class="control-label">نام کاربری</label>
 						  <input name="id" type="text" id="inputId" class="form-control" placeholder="ID" required autofocus>
@@ -191,6 +191,20 @@
         </tbody>
       </table>
     </div>
+    
+    <iframe name="temp-frame"></iframe>
+    
+		<form name="reviewForm" ng-controller="FormController as reviewCtrl" ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" > <!-- use novalidate -->
+			<select ng-model="reviewCtrl.review.stars" required>
+				<option value="1">1 star</option>
+			</select>
+			{{ reviewCtrl.review.author }}
+			<textarea name="body" ng-model="reviewCtrl.review.body" required ></textarea>
+			<label>by:</label>
+			<input name="author" ng-model="reviewCtrl.review.author" type="email" required />
+			<div> reviewForm is {{reviewForm.$valid}} </div>
+			<input type="submit" value="Submit" />
+		</form>
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	  <script src="../lib/jquery.min.js"></script>

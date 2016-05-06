@@ -7,16 +7,18 @@ public class Customer
 {
 	private String firstname;
 	private String lastname;
+	private String password;
 	private int id;
 	private int depositedAmount;
 	private Map<String, Integer> shareList;
 	private boolean admin;
 	
-	public Customer(int id, String firstname, String lastname)
+	public Customer(int id, String password, String firstname, String lastname)
 	{
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.password = password;
 		depositedAmount = 0;
 		admin = false;
 		shareList = new HashMap<String, Integer>();
@@ -45,6 +47,14 @@ public class Customer
 	public void setAdmin(boolean admin)
 	{
 		this.admin = admin;
+	}
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+	public String getPassword()
+	{
+		return password;
 	}
 	public void setFirstname(String firstname)
 	{

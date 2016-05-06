@@ -23,10 +23,22 @@ public class AddCustomer extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
 		String firstName = request.getParameter("firstname");
 		String lastName = request.getParameter("lastname");
-		String id = request.getParameter("id");
 		
+		
+		if (id == null || id.equals(""))
+		{
+			errMessages.add("ID could not be empty");
+			hasError = true;
+		}
+		if (password == null || password.equals(""))
+		{
+			errMessages.add("Password could not be empty");
+			hasError = true;
+		}
 		if (firstName == null || firstName.equals(""))
 		{
 			errMessages.add("Firstname could not be empty.");
@@ -37,11 +49,6 @@ public class AddCustomer extends HttpServlet {
 			errMessages.add("Lastname could not be empty.");
 			hasError = true;
 		}
-		if (id == null || id.equals(""))
-		{
-			errMessages.add("ID could not be empty");
-			hasError = true;
-		}
 		
 		if (!hasError)
 		{
@@ -49,15 +56,14 @@ public class AddCustomer extends HttpServlet {
 			
 			if (StockRepository.getCustomer(newId) != null)
 				newId = StockRepository.getCustomerSize() + 1;
-			customer = new Customer(newId, firstName, lastName);
+			customer = new Customer(newId, password, firstName, lastName);
 			StockRepository.addCustomer(customer);
 			out.print(gson.toJson(customer));
 		}
 		else
 		{
 			request.setAttribute("errors", errMessages);
-			for (int i = 0; i < errMessages.size(); i++)
-				out.println(errMessages.get(i));
+			out.print(gson.toJson(errMessages));
 		}
 	}
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
