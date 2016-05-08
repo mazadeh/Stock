@@ -25,18 +25,35 @@ public class GetSymbol extends HttpServlet
 		PrintWriter out = response.getWriter();
 		StockRepository repo = StockRepository.getRepository();
 		
-		List<Symbol> symbolList = null;
-		try
+		String name = request.getParameter("name");
+		
+		if (name == null || name.equals(""))
 		{
-			symbolList = repo.getSymbolList();
-		}
-		catch (SQLException ex)
-		{
-			System.err.println("Unable to connect to server when getting symbols");
-		}
-		finally
-		{
+			List<Symbol> symbolList = null;
+			try
+			{
+				symbolList = repo.getSymbolList();
+			}
+			catch (SQLException ex)
+			{
+				System.err.println("Unable to connect to server when getting symbols");
+				System.err.println(ex);
+			}
 			out.print(gson.toJson(symbolList));
+		}
+		else
+		{
+			Symbol symbol = null;
+			try
+			{
+				symbol = repo.getSymbol(name);
+			}
+			catch (SQLException ex)
+			{
+				System.err.println("Unable to connect to server when getting symbol: " + name);
+				System.err.println(ex);
+			}
+			out.print(gson.toJson(symbol));
 		}
 	}
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

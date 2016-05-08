@@ -245,6 +245,60 @@
 					<tr ng-repeat="symbol in stockCtrl.symbols">
 						<td>{{symbol.id}}</td>
 						<td>{{symbol.name}}</td>
+						<td>
+							<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>صف خرید</th>
+									<th>صف فروش</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>کد فروشنده</th>
+													<th>تعداد</th>
+													<th>قیمت</th>
+													<th>نوع</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="request in symbol.sellList">
+													<td>{{request.customerId}}</td>
+													<td>{{request.quantity}}</td>
+													<td>{{request.price}}</td>
+													<td>{{request.type.name}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td>
+									<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>کد خریدار</th>
+													<th>تعداد</th>
+													<th>قیمت</th>
+													<th>نوع</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="request in symbol.buyList">
+													<td>{{request.customerId}}</td>
+													<td>{{request.quantity}}</td>
+													<td>{{request.price}}</td>
+													<td>{{request.type.name}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
 					</tr>
 				</tbody>
 			</table>

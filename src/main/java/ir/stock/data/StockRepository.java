@@ -20,6 +20,7 @@ public class StockRepository
 	static
 	{
 		theRepository = new StockRepository();
+		
 		try
 		{
 			Class.forName("org.hsqldb.jdbc.JDBCDriver");
@@ -63,6 +64,14 @@ public class StockRepository
 		{
 			st.executeUpdate("create table symbol ( id INTEGER IDENTITY PRIMARY KEY, name varchar(20) not null )");
 			System.err.println("Symbol table created successfully");
+		}
+		
+		if (tables.get("SELL_BUY_REQUEST") == null)
+		{
+			st.executeUpdate("create table sell_buy_request ( id integer IDENTITY PRIMARY KEY, cid integer not null, " +
+							 "sname varchar(20) not null, quantity integer not null, " +
+							 "price int not null, type varchar(20), issell boolean not null )" );
+			System.err.println("Sell-Buy-Request table created successfully");
 		}
 		
 		if (tables.get("CUSTOMER") == null)
@@ -147,11 +156,30 @@ public class StockRepository
 		while (rs.next()) {
 			int id = rs.getInt("id");
 			String name = rs.getString("name");
-			Symbol symbol = new Symbol(id, name);
+			Symbol symbol = new Symbol(id, name,
+					getSellBuyRequestList(name, true),
+					getSellBuyRequestList(name, false) );
 			list.add(symbol);
 		}
 		con.close();
 		return list;
+	}
+	
+	public Symbol getSymbol(String name) throws SQLException
+	{
+		Symbol symbol = null;
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select id from symbol where (name='" + name + "')");
+		if (rs.next()) {
+			symbol = new Symbol(
+					rs.getInt("id"),
+					name,
+					getSellBuyRequestList(name, true),
+					getSellBuyRequestList(name, false) );
+		}
+		con.close();
+		return symbol;
 	}
 	
 	public Symbol addSymbol(String name) throws SQLException
@@ -166,5 +194,46 @@ public class StockRepository
 		}
 		con.close();
 		return new Symbol(id, name);
+	}
+	
+	public List<SellBuyRequest> getSellBuyRequestList(String symbolName, boolean isSell) throws SQLException
+	{
+		List<SellBuyRequest> list = new ArrayList<SellBuyRequest>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from sell_buy_request where (sname='" +
+										symbolName + "' and issell='" + isSell + "')" );
+		while (rs.next()) {
+			SellBuyRequest request;
+			request = new SellBuyRequest(rs.getInt("id"),
+										 rs.getInt("cid"),
+										 rs.getString("sname"),
+										 rs.getInt("quantity"),
+										 rs.getInt("price"),
+										 rs.getString("type"),
+										 rs.getBoolean("issell") );
+			list.add(request);
+		}
+		con.close();
+		return list;
+	}
+	
+	public SellBuyRequest addSellBuyRequest(SellBuyRequest request) throws SQLException
+	{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		st.executeUpdate("insert into sell_buy_request (cid, sname, quantity, price, type, issell)  values (" +
+						 "'" + request.getCustomerId() + "', " +
+						 "'" + request.getSymbolName() + "', " +
+						 "'" + request.getQuantity() + "', " +
+						 "'" + request.getPrice() + "', " +
+						 "'" + request.getType() + "', " +
+						 "'" + request.getIsSell() + "')");
+		ResultSet rs = st.executeQuery("select max(id) as max_id from sell_buy_request");
+		if (rs.next()) {
+			request.setId(rs.getInt("max_id"));
+		}
+		con.close();
+		return request;
 	}
 }

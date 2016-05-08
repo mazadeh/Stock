@@ -5,35 +5,43 @@ import java.util.Map;
 public class SellBuyRequest
 {
 	private int id;
-	private Symbol symbol;
+	private int customerId;
+	private String symbolName;
 	private int quantity;
 	private int price;
 	private Type type;
 	private boolean isSell;
 	
-	SellBuyRequest(int id, Symbol symbol, int quantity, int price, Type type, boolean isSell)
+	public SellBuyRequest(int id, int customerId, String symbolName, int quantity, int price, String type, boolean isSell)
 	{
 		this.id = id;
-		this.symbol = symbol;
+		this.customerId = customerId;
+		this.symbolName = symbolName;
 		this.quantity = quantity;
 		this.price = price;
-		this.type = type;
+		//this.type = type;
 		this.isSell = isSell;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(id);
-		sb.append("\t");
-		sb.append(symbol);
-		sb.append("\t");
-		sb.append(price);
-		sb.append("$\t");
-		sb.append(quantity);
-		sb.append("#\t");
-		sb.append(type);
-		return sb.toString();
+		
+		String t = "ir.stock.domain.Type" + type.toUpperCase();
+		try
+		{
+			Class clazz = Class.forName(t);
+			this.type = (Type)clazz.newInstance();
+		}
+		catch (ClassNotFoundException ex)
+		{
+			System.err.println("Can not find class " + t);
+			System.err.println(ex);
+		}
+		catch (InstantiationException ex)
+		{
+			System.err.println(ex);
+		}
+		catch (IllegalAccessException ex)
+		{
+			System.err.println(ex);
+		}
+		
 	}
 	
 	public void setId(int id)
@@ -44,13 +52,22 @@ public class SellBuyRequest
 	{
 		return id;
 	}
-	public void setSymbol(String symbol)
+	public void setSymbolName(String symbolName)
 	{
-		this.symbol = symbol;
+		this.symbolName = symbolName;
 	}
-	public String getSymbol()
+	public String getSymbolName()
 	{
-		return symbol;
+		return symbolName;
+	}
+	
+	public void setCustomerId(int customerId)
+	{
+		this.customerId = customerId;
+	}
+	public int getCustomerId()
+	{
+		return customerId;
 	}
 	public void setPrice(int price)
 	{
