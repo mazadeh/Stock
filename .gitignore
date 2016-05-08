@@ -1,2 +1,8 @@
-target/*
+# Backup files
 *.*~
+
+# Packaged directory
+target/*
+
+# Ignore database logs
+src/database/data-log/*
