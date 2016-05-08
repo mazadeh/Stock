@@ -130,7 +130,7 @@ public class StockRepository
 						 "'" + customer.getUsername() + "', " + 
 						 "'" + customer.getPassword() + "', " + 
 						 "'" + customer.getDepositedAmount() + "' )");
-		ResultSet rs = st.executeQuery("select id from symbol where (username='" + customer.getUsername() + "')");
+		ResultSet rs = st.executeQuery("select id from customer where (username='" + customer.getUsername() + "')");
 		if (rs.next()) {
 			customer.setId(rs.getInt("id"));
 		}
