@@ -1,6 +1,7 @@
 package ir.stock.controller.cusotmer;
 
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -8,6 +9,7 @@ import javax.servlet.annotation.*;
 
 import com.google.gson.Gson;
 
+import ir.stock.data.*;
 import ir.stock.domain.*;
 
 @WebServlet("/customer/add")
@@ -15,65 +17,66 @@ public class AddCustomer extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		Gson gson = new Gson();
-		Customer customer;
+		Customer customer = null;
 		
 		response.setContentType("text/html");
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		
+		PrintWriter out = response.getWriter();
+		StockRepository repo = StockRepository.getRepository();
+		
 		boolean hasError = false;
 		List<String> errMessages = new ArrayList<String>();
 		
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-		String firstName = request.getParameter("firstname");
-		String lastName = request.getParameter("lastname");
+		customer = new Customer(-1,
+			request.getParameter("firstname"), 
+			request.getParameter("lastname"), 
+			request.getParameter("username"), 
+			request.getParameter("password"), 0 );
 		
 		
-		if (id == null || id.equals(""))
-		{
-			errMessages.add("ID could not be empty");
-			hasError = true;
-		}
-		if (password == null || password.equals(""))
-		{
-			errMessages.add("Password could not be empty");
-			hasError = true;
-		}
-		if (firstName == null || firstName.equals(""))
+		if (customer.getFirstname() == null || customer.getFirstname().equals(""))
 		{
 			errMessages.add("Firstname could not be empty");
 			hasError = true;
 		}
-		if (lastName == null || lastName.equals(""))
+		if (customer.getLastname() == null || customer.getLastname().equals(""))
 		{
 			errMessages.add("Lastname could not be empty");
 			hasError = true;
 		}
+		if (customer.getUsername() == null || customer.getUsername().equals(""))
+		{
+			errMessages.add("Username could not be empty");
+			hasError = true;
+		}
+		if (customer.getPassword() == null || customer.getPassword().equals(""))
+		{
+			errMessages.add("Password could not be empty");
+			hasError = true;
+		}
 		
-		int newId = 0;
+		int newusername = 0;
 		if (!hasError)
 		{
-			 newId = Integer.parseInt(id);
-			if (StockRepository.getCustomer(newId) != null)
+			try
 			{
-				/*************** New User ID Generator *******************
-				if (StockRepository.getCustomer(newId) != null)
-					newId = StockRepository.getCustomerSize() + 1;
-				*********************************************************/
-				errMessages.add("ID is repetetive.");
+				customer = repo.addCustomer(customer);
+			}
+			catch (SQLException ex)
+			{
+				System.err.println("Unable to connect to server when adding a new customer: " + customer.getUsername());
+				System.err.println(ex);
+			}
+			if (customer.getId() < 0)
+			{
+				errMessages.add("Username is repetetive");
 				hasError = true;
 			}
+			else
+				out.print(gson.toJson(customer));
 		}
-		if (!hasError)
-		{
-			customer = new Customer(newId, password, firstName, lastName);
-			StockRepository.addCustomer(customer);
-			out.print(gson.toJson(customer));
-		}
-		else
+		if (hasError)
 		{
 			request.setAttribute("errors", errMessages);
 			out.print(gson.toJson(errMessages));

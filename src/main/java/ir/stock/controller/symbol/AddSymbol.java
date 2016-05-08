@@ -1,4 +1,4 @@
-package ir.stock.controller.cusotmer;
+package ir.stock.controller.symbol;
 
 import java.io.*;
 import java.sql.*;
@@ -12,47 +12,48 @@ import com.google.gson.Gson;
 import ir.stock.data.*;
 import ir.stock.domain.*;
 
-@WebServlet("/customer/get")
-public class GetCustomer extends HttpServlet {
+@WebServlet("/symbol/add")
+public class AddSymbol extends HttpServlet
+{
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		Gson gson = new Gson();
-		Customer customer = null;
 		
 		response.setContentType("text/html");
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		
 		PrintWriter out = response.getWriter();
-
-		String username = request.getParameter("username");
 		StockRepository repo = StockRepository.getRepository();
 		
-		if (username == null || username.equals(""))
+		boolean hasError = false;
+		List<String> errMessages = new ArrayList<String>();
+
+		String symbolName = request.getParameter("name");
+		
+		if (symbolName == null || symbolName.equals(""))
 		{
+			errMessages.add("Name could not be empty");
+			hasError = true;
+		}
+
+		if (!hasError)
+		{
+			Symbol symbol = null;
 			try
 			{
-				List<Customer> customerList = repo.getCustomerList();
-				out.print(gson.toJson(customerList));
+				symbol = repo.addSymbol(symbolName);
 			}
 			catch (SQLException ex)
 			{
-				System.err.println("Unable to connect to server : " + customer.getUsername());
+				System.err.println("Unable to connect to server when adding a new symbol: " + symbolName);
 				System.err.println(ex);
 			}
+			out.print(gson.toJson(symbol));
 		}
 		else
 		{
-			try
-			{
-				customer = repo.getCustomer(username);
-				out.print(gson.toJson(customer));
-			}
-			catch (SQLException ex)
-			{
-				System.err.println("Unable to connect to server : " + customer.getUsername());
-				System.err.println(ex);
-			}
-			
+			request.setAttribute("errors", errMessages);
+			out.print(gson.toJson(errMessages));
 		}
 	}
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

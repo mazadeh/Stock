@@ -1,50 +1,23 @@
 package ir.stock.domain;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.Collection;
-
 public class Symbol
 {
-	private String name;
-	private int price;
-	private int quantity;
 	private int id;
-	//private BuySellQueues buySellQueues;
+	private String name;
 	
-	Symbol( String name,
-		   int price,
-		   int quantity,
-		   int id )
-		   //BuySellQueues buySellQueues )
+	public Symbol( int id, String name)
 	{
-		this.name = name;
-		this.price = price;
-		this.quantity = quantity;
 		this.id = id;
-		//this.buySellQueues = buySellQueues;
+		this.name = name;
 	}
 	
-	String getSymbolName()
-	{
-		return name;
-	}
-	
-	int getSymbolPrice()
-	{
-		return price;
-	}
-	
-	int getSymbolQuantity()
-	{
-		return quantity;
-	}
-	
-	int getSymbolID()
+	public int getId()
 	{
 		return id;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 }

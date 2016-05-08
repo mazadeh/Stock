@@ -5,11 +5,23 @@
 	app.controller('StockController', ['$http', function($http){
 		var stockCtrl = this;
 		this.users = [];
+		this.symbols = [];
+		
 		this.currentUser = {firstname: 'میهمان'};
-	
+		this.newUser = {};
+		this.newSymbol = {};
+		
+		
+		//Get Users
 		$http.get('http://localhost:8080/stock/customer/get').success(function(usersData) {
 		    stockCtrl.users = usersData;
 		    console.log(usersData);
+		});
+		
+		//Get Symbols
+		$http.get('http://localhost:8080/stock/symbol/get').success(function(symbolsData) {
+		    stockCtrl.symbols = symbolsData;
+		    console.log(symbolsData);
 		});
 		
 		this.signIn = function()
@@ -19,7 +31,7 @@
 			$http({
 				method: 'POST',
 				url: 'http://localhost:8080/stock/customer/get', 
-		    params: { id: stockCtrl.currentUser.id }
+		    params: { username: stockCtrl.currentUser.username }
 				}).then(function(response) {
 					var user = response.data;
 					if (user === 'null')
@@ -51,8 +63,8 @@
 			$http({
 				method: 'POST',
 				url: 'http://localhost:8080/stock/customer/add',
-		    params: { id: stockCtrl.currentUser.id , password: stockCtrl.currentUser.password ,
-		    					firstname: stockCtrl.currentUser.firstname , lastname: stockCtrl.currentUser.lastname }
+		    	params: { username: stockCtrl.newUser.username , password: stockCtrl.newUser.password ,
+		    					firstname: stockCtrl.newUser.firstname , lastname: stockCtrl.newUser.lastname }
 				}).then(function(response) {
 					console.log(response);
 					if (response.data.hasOwnProperty('id'))
@@ -73,6 +85,37 @@
 						}
 
 						var element = document.getElementById("signUpModalError");
+						element.innerHTML = '';
+						element.appendChild(ul);
+					}
+			});
+		}
+		
+		
+		this.addSymbol = function()
+		{
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/symbol/add',
+			    params: { name: stockCtrl.newSymbol.name } }).then(function(response) {
+					console.log(response);
+					if (response.data.hasOwnProperty('id'))
+					{
+						stockCtrl.symbols.push(response.data);
+						$('#addSymbolModal').modal('hide');
+					}
+					else
+					{
+						var ul = document.createElement('ul');
+						for (var error in response.data)
+						{
+							var li = document.createElement('li');
+							var errText = document.createTextNode(response.data[error]);
+							li.appendChild(errText);
+							ul.appendChild(li);
+						}
+
+						var element = document.getElementById("addSymbolModalError");
 						element.innerHTML = '';
 						element.appendChild(ul);
 					}

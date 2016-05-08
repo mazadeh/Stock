@@ -2,14 +2,14 @@
 <html ng-app="stock" lang="fa">
 	<head>
 		<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>سامانه معاملات بورس و اوراق بهادارد</title>
-    <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/stock.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>سامانه معاملات بورس و اوراق بهادارد</title>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/stock.css">
+		<!-- Favicon -->
+		<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 	</head>
 	<body ng-controller="StockController as stockCtrl">
 		<div class="navbar-wrapper">
@@ -125,8 +125,8 @@
 				  <div class="modal-body">
 				    <form class="form-signin" ng-submit="stockCtrl.signIn()">
 						  <h2 class="form-signin-heading">لطفا نام کاربری و رمز عبور خود را وارد کنید.</h2>
-						  <label for="inputId" class="control-label">نام کاربری</label>
-						  <input type="text" id="inputId" ng-model="stockCtrl.currentUser.id" class="form-control" placeholder="ID" required autofocus>
+						  <label for="inputUsername" class="control-label">نام کاربری</label>
+						  <input type="text" id="inputUsername" ng-model="stockCtrl.currentUser.username" class="form-control" placeholder="Username" required autofocus>
 						  <label for="inputPassword" class="control-label">گذرواژه</label>
 						  <input type="password" id="inputPassword" ng-model="stockCtrl.currentUser.password" class="form-control" placeholder="Password" required>
 						  <div class="checkbox">
@@ -148,6 +148,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- / Sign In Modal -->
 		
 		<!-- Sign Up Modal -->
 		<div id="signUpModal" class="modal fade" role="dialog">
@@ -160,14 +161,14 @@
 				  <div class="modal-body">
 				    <form class="form-signin" ng-submit="stockCtrl.signUp()" novalidate>
 						  <h2 class="form-signin-heading">اطلاعات زیر را وارد کنید.</h2>
-						  <label for="inputId" class="control-label">نام کاربری</label>
-						  <input name="id" type="text" id="inputId" ng-model="stockCtrl.currentUser.id" class="form-control" placeholder="ID" required autofocus>
+						  <label for="inputUsername" class="control-label">نام کاربری</label>
+						  <input name="id" type="text" id="inputUsername" ng-model="stockCtrl.newUser.username" class="form-control" placeholder="Username" required autofocus>
 						  <label for="inputName" class="control-label">نام</label>
-						  <input name="firstname" type="text" id="inputName" ng-model="stockCtrl.currentUser.firstname" class="form-control" placeholder="First Name" required>
+						  <input name="firstname" type="text" id="inputName" ng-model="stockCtrl.newUser.firstname" class="form-control" placeholder="First Name" required>
 						  <label for="inputLastName" class="control-label">نام خانوادگی</label>
-						  <input name="lastname" type="text" id="inputLastName" ng-model="stockCtrl.currentUser.lastname" class="form-control" placeholder="Last Name" required>
+						  <input name="lastname" type="text" id="inputLastName" ng-model="stockCtrl.newUser.lastname" class="form-control" placeholder="Last Name" required>
 						  <label for="inputPassword" class="control-label">گذرواژه</label>
-						  <input type="password" id="inputPassword" ng-model="stockCtrl.currentUser.password" class="form-control" placeholder="Password" required>
+						  <input type="password" id="inputPassword" ng-model="stockCtrl.newUser.password" class="form-control" placeholder="Password" required>
 						  <label for="inputConfirmPassword" class="control-label">تکرار گذرواژه</label>
 						  <input type="password" id="inputPassword" class="form-control" placeholder="Confirm Password" required>
 						  <button type="submit" class="btn btn-lg btn-primary btn-block">ثبت نام</button>
@@ -180,34 +181,83 @@
 				</div>
 			</div>
 		</div>
+		<!-- / Sign Up Modal -->
 		
+		<!-- Customers Table -->
 		<div class="table-responsive col-md-6">
-			<caption>لیست کاربران سامانه</caption>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>نام کاربری</th>
-            <th>نام</th>
-            <th>نام خانوادگی</th>
-            <th>سرمایه</th>
-            <th>تعداد سهام ها</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="user in stockCtrl.users">
-	          <td>{{user.id}}</td>
-            <td>{{user.firstname}}</td>
-            <td>{{user.lastname}}</td>
-            <td>{{user.depositedAmount}}</td>
-            <td>{{user.shareList}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+			<table class="table table-striped">
+				<caption>لیست کاربران سامانه</caption>
+				<thead>
+					<tr>
+						<th>نام کاربری</th>
+						<th>نام</th>
+						<th>نام خانوادگی</th>
+						<th>سرمایه</th>
+						<th>تعداد سهام ها</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in stockCtrl.users">
+						<td>{{user.username}}</td>
+						<td>{{user.firstname}}</td>
+						<td>{{user.lastname}}</td>
+						<td>{{user.depositedAmount}}</td>
+						<td>{{user.shareList}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- / Customers Table -->
 		
+		<!-- Symbols Table -->
+		<div class="table-responsive col-md-6">
+			<table class="table table-striped">
+				<caption>لیست نمادهای سامانه</caption>
+				<thead>
+					<tr>
+						<th>شماره</th>
+						<th>نام نماد</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="symbol in stockCtrl.symbols">
+						<td>{{symbol.id}}</td>
+						<td>{{symbol.name}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- / Symbols Table -->
+    
+		<!-- / Add Symbol Modal -->
+		
+		<div id="addSymbolModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">تعریف نماد جدید</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-add-symbol" ng-submit="stockCtrl.addSymbol()">
+							<h2 class="form-add-symbol-heading">اطلاعات خواسته شده را وارد نمایید.</h2>
+							<label for="inputName" class="control-label">نام نماد</label>
+							<input type="text" id="inputName" ng-model="stockCtrl.newSymbol.name" class="form-control" placeholder="Name" required autofocus>
+							<button class="btn btn-lg btn-primary btn-block" type="submit">افزودن</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<div id="addSymbolModalError" class="text-warning">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- / Add Symbol Modal -->
+		<button><a data-toggle="modal" data-target="#addSymbolModal" href="#addSymbolModal">add symbol</a></button>
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	  <script src="../lib/jquery.min.js"></script>
-	  <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
+		<script src="../lib/jquery.min.js"></script>
+		<script type="text/javascript" src="../lib/bootstrap.min.js"></script>
 		<script type="text/javascript" src="../lib/angular.min.js"></script>
 		<script type="text/javascript" src="../lib/angular-messages.min.js"></script>
 		<script type="text/javascript" src="../js/app.js"></script>

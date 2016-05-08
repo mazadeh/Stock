@@ -5,62 +5,38 @@ import java.util.HashMap;
 
 public class Customer
 {
+	private int id;
 	private String firstname;
 	private String lastname;
+	private String username;
 	private String password;
-	private int id;
 	private int depositedAmount;
 	private Map<String, Integer> shareList;
-	private boolean admin;
 	
-	public Customer(int id, String password, String firstname, String lastname)
+	public Customer(int id, String firstname, String lastname, String username, String password, int depositedAmount)
 	{
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.username = username;
 		this.password = password;
-		depositedAmount = 0;
-		admin = false;
+		this.depositedAmount = depositedAmount;
 		shareList = new HashMap<String, Integer>();
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		if (admin)
-			sb.append('*');
-		sb.append(id);
-		sb.append('\t');
-		sb.append(firstname);
-		sb.append('\t');
-		sb.append(lastname);
-		sb.append('\t');
-		sb.append(depositedAmount);
-		sb.append('$');
-		return sb.toString();
-	}
-
-	public boolean isAdmin()
+	public void setId(int id)
 	{
-		return admin;
+		this.id = id;
 	}
-	public void setAdmin(boolean admin)
+	public int getId()
 	{
-		this.admin = admin;
-	}
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
-	public String getPassword()
-	{
-		return password;
+			return id;
 	}
 	public void setFirstname(String firstname)
 	{
 		this.firstname = firstname;
 	}
-	public String getFistname()
+	public String getFirstname()
 	{
 		return firstname;
 	}
@@ -72,13 +48,21 @@ public class Customer
 	{
 		return lastname;
 	}
-	public void setId(int id)
+	public void setPassword(String password)
 	{
-		this.id = id;
+		this.password = password;
 	}
-	public int getId()
+	public String getPassword()
 	{
-			return id;
+		return password;
+	}
+	public void setUsername(String username)
+	{
+		this.username = username;
+	}
+	public String getUsername()
+	{
+		return username;
 	}
 	public void setDepositedAmount(int depositedAmount)
 	{
