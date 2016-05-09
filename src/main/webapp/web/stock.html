@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/stock.css">
 		<!-- Favicon -->
 		<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+		<script type="text/javascript" src="../js/actions.js"></script>
 	</head>
 	<body ng-controller="StockController as stockCtrl">
 		<div class="navbar-wrapper">
@@ -37,11 +38,11 @@
 				<div class="collapse navbar-collapse" id="navbar-collapse-1">
 				
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">صفحه اصلی</a></li>
+						<li><a href="#" onclick="showHome()">صفحه اصلی</a></li>
 						<li class="dropdown">
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">بخش کاربری <span class="caret"></span></a>
 						  <ul class="dropdown-menu">
-						    <li><a href="#">داشبورد</a></li>
+						    <li><a href="#" onclick="showDashboard()">داشبورد</a></li>
 								<li><a href="#">سرمایه گذاری</a></li>
 								<li><a href="#">فروش سهام</a></li>
 						    <li role="separator" class="divider"></li>
@@ -50,7 +51,7 @@
 						    <li><a href="#">خروج</a></li>
 						  </ul>
 						</li>
-						<li><a href="#">وضعیت بازار</a></li>
+						<li><a href="#" onclick="showStatus()">وضعیت بازار</a></li>
 						<li><a href="#">درباره ما</a></li>
 						<li><a href="#">تماس با ما</a></li>
 					</ul>
@@ -61,14 +62,14 @@
 		
 		<!-- Carousel
     ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div id="homeCarousel" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-        <li data-target="#myCarousel" data-slide-to="4"></li>
+        <li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#homeCarousel" data-slide-to="1"></li>
+        <li data-target="#homeCarousel" data-slide-to="2"></li>
+        <li data-target="#homeCarousel" data-slide-to="3"></li>
+        <li data-target="#homeCarousel" data-slide-to="4"></li>
       </ol>
       <div class="carousel-inner" role="listbox">
       
@@ -123,19 +124,17 @@
           </div>
         </div>
       </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <a class="left carousel-control" href="#homeCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         <span class="control-label">Previous</span>
       </a>
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <a class="right carousel-control" href="#homeCarousel" role="button" data-slide="next">
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="control-label">Next</span>
       </a>
-    </div><!-- /.carousel -->
+    </div>
+    <!-- /.carousel -->
     
-    
-		<h1>سامانه خرید و فروش بورس و اوراق بهادار</h1>
-
 		<!-- Sign In Modal -->
 		<div id="signInModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
@@ -205,8 +204,21 @@
 		</div>
 		<!-- / Sign Up Modal -->
 		
+		<!-- Dashboard Sidebar -->
+		<div id="#sid" class="dashboard-sidebar">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li class="active"><a href="#">داشبورد <span class="sr-only">(current)</span></a></li>
+					<li><a href="#">اطلاعات کاربری</a></li>
+					<li><a href="#">خرید سهام</a></li>
+					<li><a href="#">فروش سهام</a></li>
+				</ul>
+			</div>
+        </div>
+        <!-- /Dashboard Sidebar -->
+		
 		<!-- Customers Table -->
-		<div class="table-responsive col-md-6">
+		<div class="table-responsive col-md-6 customer-table">
 			<table class="table table-striped">
 				<caption>لیست کاربران سامانه</caption>
 				<thead>
@@ -232,7 +244,7 @@
 		<!-- / Customers Table -->
 		
 		<!-- Symbols Table -->
-		<div class="table-responsive col-md-6">
+		<div class="table-responsive col-md-6 symbol-table">
 			<table class="table table-striped">
 				<caption>لیست نمادهای سامانه</caption>
 				<thead>
@@ -330,7 +342,8 @@
 			</div>
 		</div>
 		<!-- / Add Symbol Modal -->
-		<button><a data-toggle="modal" data-target="#addSymbolModal" href="#addSymbolModal">add symbol</a></button>
+		<button style="display:none;"><a data-toggle="modal" data-target="#addSymbolModal" href="#addSymbolModal">add symbol</a></button>
+		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="../lib/jquery.min.js"></script>
 		<script type="text/javascript" src="../lib/bootstrap.min.js"></script>

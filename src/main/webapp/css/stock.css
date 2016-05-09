@@ -4,7 +4,7 @@ body {
 
 /* Carousel base class */
 .carousel {
-  height: 250px;
+  height: 400px;
   margin-bottom: 60px;
 }
 /* Since positioning the image, we need to help out the caption */
@@ -14,7 +14,7 @@ body {
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
-  height: 250px;
+  height: 400px;
   background-color: #777;
 }
 .carousel-inner > .item > img {
@@ -22,13 +22,54 @@ body {
   top: 0;
   left: 0;
   min-width: 100%;
-  height: 250px;
+  height: 400px;
 }
 
 input.form-control
 {
 	width: 50%;
 	margin-bottom: 5px;
+}
+
+/* Sidebar navigation */
+.sidebar
+{
+  float: right;
+}
+
+.customer-table
+{
+  float: right;
+}
+
+.symbol-table
+{
+  float: right;
+}
+
+.nav-sidebar {
+  padding-right: 0;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+.dashboard-sidebar
+{
+	display: none;
+}
+
+.symbol-table
+{
+	display: none;
+}
+
+.customer-table
+{
+	display: none;
 }
 
 @media (min-width: 768px)

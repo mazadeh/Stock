@@ -45,6 +45,7 @@
 						stockCtrl.currentUser = user;
 						console.log('Hello ' + stockCtrl.currentUser.firstname);
 						$('#signInModal').modal('hide');
+						showDashboard();
 					}
 					else
 					{
