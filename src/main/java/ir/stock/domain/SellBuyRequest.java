@@ -6,17 +6,17 @@ public class SellBuyRequest
 {
 	private int id;
 	private int customerId;
-	private String symbolName;
+	private int symbolId;
 	private int quantity;
 	private int price;
 	private Type type;
 	private boolean isSell;
 	
-	public SellBuyRequest(int id, int customerId, String symbolName, int quantity, int price, String type, boolean isSell)
+	public SellBuyRequest(int id, int customerId, int symbolId, int quantity, int price, String type, boolean isSell)
 	{
 		this.id = id;
 		this.customerId = customerId;
-		this.symbolName = symbolName;
+		this.symbolId = symbolId;
 		this.quantity = quantity;
 		this.price = price;
 		//this.type = type;
@@ -52,13 +52,13 @@ public class SellBuyRequest
 	{
 		return id;
 	}
-	public void setSymbolName(String symbolName)
+	public void setSymbolId(int symbolId)
 	{
-		this.symbolName = symbolName;
+		this.symbolId = symbolId;
 	}
-	public String getSymbolName()
+	public int getSymbolId()
 	{
-		return symbolName;
+		return symbolId;
 	}
 	
 	public void setCustomerId(int customerId)

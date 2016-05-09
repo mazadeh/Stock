@@ -31,6 +31,12 @@ input.form-control
 	margin-bottom: 5px;
 }
 
+select.form-control
+{
+	width: 50%;
+	margin-bottom: 5px;
+}
+
 /* Sidebar navigation */
 .sidebar
 {
@@ -70,6 +76,11 @@ input.form-control
 .customer-table
 {
 	display: none;
+}
+
+#symbol-list
+{
+	float: right;
 }
 
 @media (min-width: 768px)

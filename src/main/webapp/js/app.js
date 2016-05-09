@@ -10,6 +10,8 @@
 		this.currentUser = {firstname: 'میهمان'};
 		this.newUser = {};
 		this.newSymbol = {};
+		this.sellRequest = {};
+		this.types = ['GTC', 'MTC'];
 		
 		
 		//Get Users
@@ -119,6 +121,31 @@
 						var element = document.getElementById("addSymbolModalError");
 						element.innerHTML = '';
 						element.appendChild(ul);
+					}
+			});
+		}
+		
+		this.sell = function()
+		{
+			console.log(stockCtrl.sellRequest);
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/symbol/sell',
+			    params: { customerId: stockCtrl.currentUser.id,
+			    		  symbolId: stockCtrl.sellRequest.symbolId,
+			    		  quantity: stockCtrl.sellRequest.quantity,
+			    		  price: stockCtrl.sellRequest.price,
+			    		  type: stockCtrl.sellRequest.type} }).then(function(response) {
+					console.log(response);
+					if (response.data.id === -1)
+					{
+						var element = document.getElementById('signInModalError');
+						element.innerHTML = 'درخواست صحیح نمی باشد!';
+					}
+					else
+					{
+						stockCtrl.symbols[stockCtrl.sellRequest.symbolId].sellList.push(response.data);
+						$('#sellModal').modal('hide');
 					}
 			});
 		}

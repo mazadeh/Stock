@@ -25,9 +25,9 @@ public class GetSymbol extends HttpServlet
 		PrintWriter out = response.getWriter();
 		StockRepository repo = StockRepository.getRepository();
 		
-		String name = request.getParameter("name");
+		String id = request.getParameter("id");
 		
-		if (name == null || name.equals(""))
+		if (id == null || id.equals(""))
 		{
 			List<Symbol> symbolList = null;
 			try
@@ -46,11 +46,11 @@ public class GetSymbol extends HttpServlet
 			Symbol symbol = null;
 			try
 			{
-				symbol = repo.getSymbol(name);
+				symbol = repo.getSymbol(Integer.parseInt(id));
 			}
 			catch (SQLException ex)
 			{
-				System.err.println("Unable to connect to server when getting symbol: " + name);
+				System.err.println("Unable to connect to server when getting symbol: " + id);
 				System.err.println(ex);
 			}
 			out.print(gson.toJson(symbol));

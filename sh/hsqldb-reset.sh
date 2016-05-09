@@ -1,1 +1,1 @@
-rm -r ../src/database/data-log/*
+rm -r ../src/database/data-log
