@@ -126,6 +126,8 @@ public class StockRepository
 						rs.getInt("depositedAmount") );
 		}
 		con.close();
+		customer.setSellList(getSellBuyRequestListByCustomer(customer.getId(), true));
+		customer.setBuyList(getSellBuyRequestListByCustomer(customer.getId(), false));
 		return customer;
 	}
 	
@@ -158,8 +160,8 @@ public class StockRepository
 			String name = rs.getString("name");
 			Symbol symbol = new Symbol(id, 
 									   name,
-									   getSellBuyRequestList(id, true),
-									   getSellBuyRequestList(id, false) );
+									   getSellBuyRequestListBySymbol(id, true),
+									   getSellBuyRequestListBySymbol(id, false) );
 			list.add(symbol);
 		}
 		con.close();
@@ -175,8 +177,8 @@ public class StockRepository
 		if (rs.next()) {
 			symbol = new Symbol(id,
 								rs.getString("name"),
-								getSellBuyRequestList(id, true),
-								getSellBuyRequestList(id, false) );
+								getSellBuyRequestListBySymbol(id, true),
+								getSellBuyRequestListBySymbol(id, false) );
 		}
 		con.close();
 		return symbol;
@@ -196,13 +198,35 @@ public class StockRepository
 		return new Symbol(id, name);
 	}
 	
-	public List<SellBuyRequest> getSellBuyRequestList(int symbolId, boolean isSell) throws SQLException
+	public List<SellBuyRequest> getSellBuyRequestListBySymbol(int symbolId, boolean isSell) throws SQLException
 	{
 		List<SellBuyRequest> list = new ArrayList<SellBuyRequest>();
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();
 		ResultSet rs = st.executeQuery("select * from sell_buy_request where (sid='" +
 										symbolId + "' and issell='" + isSell + "')" );
+		while (rs.next()) {
+			SellBuyRequest request;
+			request = new SellBuyRequest(rs.getInt("id"),
+										 rs.getInt("cid"),
+										 rs.getInt("sid"),
+										 rs.getInt("quantity"),
+										 rs.getInt("price"),
+										 rs.getString("type"),
+										 rs.getBoolean("issell") );
+			list.add(request);
+		}
+		con.close();
+		return list;
+	}
+	
+	public List<SellBuyRequest> getSellBuyRequestListByCustomer(int customerId, boolean isSell) throws SQLException
+	{
+		List<SellBuyRequest> list = new ArrayList<SellBuyRequest>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from sell_buy_request where (cid='" +
+										customerId + "' and issell='" + isSell + "')" );
 		while (rs.next()) {
 			SellBuyRequest request;
 			request = new SellBuyRequest(rs.getInt("id"),

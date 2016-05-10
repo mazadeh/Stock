@@ -11,6 +11,7 @@
 		this.newUser = {};
 		this.newSymbol = {};
 		this.sellRequest = {};
+		this.buyRequest = {};
 		this.types = ['GTC', 'MTC'];
 		
 		
@@ -58,6 +59,8 @@
 					// alert(response);
 					//console.log(user);
 					console.log(response);
+					console.log(stockCtrl.currentUser.sellList);
+					console.log(stockCtrl.currentUser.buyList);
 			});
 		}
 		
@@ -139,13 +142,38 @@
 					console.log(response);
 					if (response.data.id === -1)
 					{
-						var element = document.getElementById('signInModalError');
+						var element = document.getElementById('sellModalError');
 						element.innerHTML = 'درخواست صحیح نمی باشد!';
 					}
 					else
 					{
 						stockCtrl.symbols[stockCtrl.sellRequest.symbolId].sellList.push(response.data);
 						$('#sellModal').modal('hide');
+					}
+			});
+		}
+		
+		this.buy = function()
+		{
+			console.log(stockCtrl.sellRequest);
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/symbol/buy',
+			    params: { customerId: stockCtrl.currentUser.id,
+			    		  symbolId: stockCtrl.buyRequest.symbolId,
+			    		  quantity: stockCtrl.buyRequest.quantity,
+			    		  price: stockCtrl.buyRequest.price,
+			    		  type: stockCtrl.buyRequest.type} }).then(function(response) {
+					console.log(response);
+					if (response.data.id === -1)
+					{
+						var element = document.getElementById('buyModalError');
+						element.innerHTML = 'درخواست صحیح نمی باشد!';
+					}
+					else
+					{
+						stockCtrl.symbols[stockCtrl.buyRequest.symbolId].buyList.push(response.data);
+						$('#buyModal').modal('hide');
 					}
 			});
 		}

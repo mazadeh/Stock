@@ -43,7 +43,7 @@
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">بخش کاربری <span class="caret"></span></a>
 						  <ul class="dropdown-menu">
 						    <li><a href="#" onclick="showDashboard()">داشبورد</a></li>
-								<li><a href="#">سرمایه گذاری</a></li>
+								<li><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></li>
 								<li><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></li>
 						    <li role="separator" class="divider"></li>
 								<li><a data-toggle="modal" data-target="#signInModal" href="#signInModal">ورود</a></li>
@@ -204,19 +204,6 @@
 		</div>
 		<!-- / Sign Up Modal -->
 		
-		<!-- Dashboard Sidebar -->
-		<div id="#sid" class="dashboard-sidebar">
-			<div class="col-sm-3 col-md-2 sidebar">
-				<ul class="nav nav-sidebar">
-					<li class="active"><a href="#">داشبورد <span class="sr-only">(current)</span></a></li>
-					<li><a href="#">اطلاعات کاربری</a></li>
-					<li><a href="#">خرید سهام</a></li>
-					<li><a href="#">فروش سهام</a></li>
-				</ul>
-			</div>
-        </div>
-        <!-- /Dashboard Sidebar -->
-		
 		<!-- Sell Modal -->
 		<div id="sellModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
@@ -252,31 +239,134 @@
 		</div>
 		<!-- / Sell Modal -->
 
-		<!-- Customers Table -->
-		<div class="table-responsive col-md-6 customer-table">
-			<table class="table table-striped">
-				<caption>لیست کاربران سامانه</caption>
-				<thead>
-					<tr>
-						<th>نام کاربری</th>
-						<th>نام</th>
-						<th>نام خانوادگی</th>
-						<th>سرمایه</th>
-						<th>تعداد سهام ها</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="user in stockCtrl.users">
-						<td>{{user.username}}</td>
-						<td>{{user.firstname}}</td>
-						<td>{{user.lastname}}</td>
-						<td>{{user.depositedAmount}}</td>
-						<td>{{user.shareList}}</td>
-					</tr>
-				</tbody>
-			</table>
+		
+		<!-- Buy Modal -->
+		<div id="buyModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">خرید سهام</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-buy" ng-submit="stockCtrl.buy()" novalidate>
+							<h2 class="form-buy-heading">اطلاعات زیر را وارد کنید.</h2>
+							<label for="symbolName" class="control-label">نام سهام</label>
+							<select name="symbolId" class="form-control" ng-model="stockCtrl.buyRequest.symbolId">
+								<option ng-repeat="symbol in stockCtrl.symbols" value="{{symbol.id}}">{{symbol.name}}</option>
+							</select>
+							<label for="inputQuantity" class="control-label">تعداد سهم</label>
+							<input name="quantity" type="text" id="inputQuantity" ng-model="stockCtrl.buyRequest.quantity" class="form-control" placeholder="Quantity" required autofocus>
+							<label for="inputPrice" class="control-label">قیمت</label>
+							<input name="price" type="text" id="inputPrice" ng-model="stockCtrl.buyRequest.price" class="form-control" placeholder="Price" required autofocus>
+							<label for="symbolName" class="control-label">نوع خرید</label>
+							<select name="type" class="form-control" ng-model="stockCtrl.buyRequest.type">
+								<option ng-repeat="type in stockCtrl.types" value="{{type}}">{{symbol}}</option>
+							</select>
+							<button type="submit" class="btn btn-lg btn-primary btn-block">خرید</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<div id="buyModalError" class="text-warning">
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<!-- / Customers Table -->
+		<!-- / Buy Modal -->
+		
+		
+		<!-- Dashboard Sidebar -->
+		<div id="#sid" class="dashboard-sidebar">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li class="active"><a href="#">داشبورد <span class="sr-only">(current)</span></a></li>
+					<li><a href="#">اطلاعات کاربری</a></li>
+					<li><a href="#">خرید سهام</a></li>
+					<li><a href="#">فروش سهام</a></li>
+				</ul>
+			</div>
+        </div>
+        <!-- /Dashboard Sidebar -->
+        
+        <!-- Dashboard Body Container -->
+        <div class="dashboard-body-container">
+        	<!-- Sell-Buy Table -->
+			<div class="table-responsive col-md-6 sell-buy-table">
+				<button><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></button>
+				<button><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></button>
+				<caption><p>لیست معاملات شما</p></caption>
+				<table class="table table-striped">
+					<caption>صف خرید</caption>
+					<thead>
+						<tr>
+							<th>کد سهام</th>
+							<th>نام سهام</th>
+							<th>تعداد</th>
+							<th>قیمت</th>
+							<th>نوع</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="request in stockCtrl.currentUser.sellList">
+							<td>{{request.symbolId}}</td>
+							<td>{{stockCtrl.symbols[request.symbolId].name}}</td>
+							<td>{{request.quantity}}</td>
+							<td>{{request.price}}</td>
+							<td>{{request.type.name}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-striped">
+					<caption>صف فروش</caption>
+					<thead>
+						<tr>
+							<th>کد سهام</th>
+							<th>نام سهام</th>
+							<th>تعداد</th>
+							<th>قیمت</th>
+							<th>نوع</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="request in stockCtrl.currentUser.buyList">
+							<td>{{request.symbolId}}</td>
+							<td>{{stockCtrl.symbols[request.symbolId].name}}</td>
+							<td>{{request.quantity}}</td>
+							<td>{{request.price}}</td>
+							<td>{{request.type.name}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- / Sell-Buy Table -->
+		
+			<!-- Customers Table -->
+			<div class="table-responsive col-md-6 customer-table">
+				<table class="table table-striped">
+					<caption>لیست کاربران سامانه</caption>
+					<thead>
+						<tr>
+							<th>نام کاربری</th>
+							<th>نام</th>
+							<th>نام خانوادگی</th>
+							<th>سرمایه</th>
+							<th>تعداد سهام ها</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="user in stockCtrl.users">
+							<td>{{user.username}}</td>
+							<td>{{user.firstname}}</td>
+							<td>{{user.lastname}}</td>
+							<td>{{user.depositedAmount}}</td>
+							<td>{{user.shareList}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- / Customers Table -->
+        </div>
 		
 		<!-- Symbols Table -->
 		<div class="table-responsive col-md-6 symbol-table">

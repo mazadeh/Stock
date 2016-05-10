@@ -13,12 +13,14 @@ var showDashboard = function()
 {
 	hideAll();
 	$('.dashboard-sidebar').show();
+	$('.sell-buy-table').show();
 	$('.customer-table').show();
 }
 
 var hideDashboard = function()
 {
 	$('.dashboard-sidebar').hide();
+	$('.sell-buy-table').hide();
 	$('.customer-table').hide();
 }
 

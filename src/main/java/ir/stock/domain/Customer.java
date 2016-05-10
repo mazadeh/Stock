@@ -1,5 +1,7 @@
 package ir.stock.domain;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -13,6 +15,9 @@ public class Customer
 	private int depositedAmount;
 	private Map<String, Integer> shareList;
 	
+	private List<SellBuyRequest> sellList;
+	private List<SellBuyRequest> buyList;
+	
 	public Customer(int id, String firstname, String lastname, String username, String password, int depositedAmount)
 	{
 		this.id = id;
@@ -21,6 +26,7 @@ public class Customer
 		this.username = username;
 		this.password = password;
 		this.depositedAmount = depositedAmount;
+		
 		shareList = new HashMap<String, Integer>();
 	}
 	
@@ -104,5 +110,25 @@ public class Customer
 		if (shareList.get(symbol) == null || shareList.get(symbol) < quantity)
 			return false;
 		return true;
+	}
+	
+	public void setBuyList(List<SellBuyRequest> list)
+	{
+		this.buyList = list;
+	}
+	
+	public List<SellBuyRequest> getBuyList()
+	{
+		return this.buyList;
+	}
+	
+	public void setSellList(List<SellBuyRequest> list)
+	{
+		this.sellList = list;
+	}
+	
+	public List<SellBuyRequest> getSellList()
+	{
+		return this.sellList;
 	}
 }
