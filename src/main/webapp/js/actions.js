@@ -13,6 +13,8 @@ var showDashboard = function()
 {
 	hideAll();
 	$('.dashboard-sidebar').show();
+	$('.cashe-box').show();
+	$('.customer-share-table').show();
 	$('.sell-buy-table').show();
 	$('.customer-table').show();
 }
@@ -20,6 +22,8 @@ var showDashboard = function()
 var hideDashboard = function()
 {
 	$('.dashboard-sidebar').hide();
+	$('.cashe-box').hide();
+	$('.customer-share-table').hide();
 	$('.sell-buy-table').hide();
 	$('.customer-table').hide();
 }

@@ -215,8 +215,11 @@
 					<div class="modal-body">
 						<form class="form-sell" ng-submit="stockCtrl.sell()" novalidate>
 							<h2 class="form-sell-heading">اطلاعات زیر را وارد کنید.</h2>
-							<label for="symbolName" class="control-label">نام سهام</label>
+							<label for="symbolId" class="control-label">نام سهام</label>
 							<select name="symbolId" class="form-control" ng-model="stockCtrl.sellRequest.symbolId">
+								<!--
+								<option ng-repeat="symbol in stockCtrl.currentUser.shareList" value="{{symbol.id}}">{{symbol.name}}</option>
+								-->
 								<option ng-repeat="symbol in stockCtrl.symbols" value="{{symbol.id}}">{{symbol.name}}</option>
 							</select>
 							<label for="inputQuantity" class="control-label">تعداد سهم</label>
@@ -251,7 +254,7 @@
 					<div class="modal-body">
 						<form class="form-buy" ng-submit="stockCtrl.buy()" novalidate>
 							<h2 class="form-buy-heading">اطلاعات زیر را وارد کنید.</h2>
-							<label for="symbolName" class="control-label">نام سهام</label>
+							<label for="symbolId" class="control-label">نام سهام</label>
 							<select name="symbolId" class="form-control" ng-model="stockCtrl.buyRequest.symbolId">
 								<option ng-repeat="symbol in stockCtrl.symbols" value="{{symbol.id}}">{{symbol.name}}</option>
 							</select>
@@ -275,6 +278,30 @@
 		</div>
 		<!-- / Buy Modal -->
 		
+		<!-- Increase Cashe Modal -->
+		<div id="increaseCasheModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">افزایش اعتبار</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-increase-cashe" ng-submit="stockCtrl.increaseCashe()" novalidate>
+							<h2 class="form-increase-cashe-heading">اطلاعات زیر را وارد کنید.</h2>
+							<label for="cashe" class="control-label">مبلغ درخواستی</label>
+							<input name="cashe" type="text" id="inputcashe" ng-model="stockCtrl.increaseCasheRequest.money" class="form-control" placeholder="Cashe" required autofocus>
+							<button type="submit" class="btn btn-lg btn-primary btn-block">فروش</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<div id="increaseCasheError" class="text-warning">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- / Sell Modal -->
 		
 		<!-- Dashboard Sidebar -->
 		<div id="#sid" class="dashboard-sidebar">
@@ -282,19 +309,46 @@
 				<ul class="nav nav-sidebar">
 					<li class="active"><a href="#">داشبورد <span class="sr-only">(current)</span></a></li>
 					<li><a href="#">اطلاعات کاربری</a></li>
-					<li><a href="#">خرید سهام</a></li>
-					<li><a href="#">فروش سهام</a></li>
+					<li><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></li>
+					<li><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></li>
 				</ul>
 			</div>
         </div>
         <!-- /Dashboard Sidebar -->
         
+        <!-- Cashe Box -->
+        <div class="cashe-box">
+        	<h2>موجودی حساب</h2>
+        	<h3>{{stockCtrl.currentUser.depositedAmount}} $</h3>
+        	<button><a data-toggle="modal" data-target="#increaseCasheModal" href="#increaseCasheModal">افزایش اعتبار</a></button>
+        </div>
+        <!-- /Cashe Box -->
+        
         <!-- Dashboard Body Container -->
         <div class="dashboard-body-container">
+        	<!-- Customer-Share Table -->
+        	<div class="table-responsive col-md-6 customer-share-table">
+        		<table class="table table-striped">
+					<caption>سهام های شما</caption>
+					<thead>
+						<tr>
+							<th>کد سهام</th>
+							<th>نام سهام</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="symbol in stockCtrl.currentUser.shareList">
+							<td>{{symbol.id}}</td>
+							<td>{{symbol.name}}</td>
+							<td>
+						</tr>
+					</tbody>
+				</table>
+        	</div>
+        	<!-- /Customer-Share Table -->
+        	
         	<!-- Sell-Buy Table -->
 			<div class="table-responsive col-md-6 sell-buy-table">
-				<button><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></button>
-				<button><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></button>
 				<caption><p>لیست معاملات شما</p></caption>
 				<table class="table table-striped">
 					<caption>صف خرید</caption>
@@ -308,7 +362,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="request in stockCtrl.currentUser.sellList">
+						<tr ng-repeat="request in stockCtrl.currentUser.buyList">
 							<td>{{request.symbolId}}</td>
 							<td>{{stockCtrl.symbols[request.symbolId].name}}</td>
 							<td>{{request.quantity}}</td>
@@ -329,7 +383,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="request in stockCtrl.currentUser.buyList">
+						<tr ng-repeat="request in stockCtrl.currentUser.sellList">
 							<td>{{request.symbolId}}</td>
 							<td>{{stockCtrl.symbols[request.symbolId].name}}</td>
 							<td>{{request.quantity}}</td>
@@ -339,7 +393,7 @@
 					</tbody>
 				</table>
 			</div>
-			<!-- / Sell-Buy Table -->
+			<!-- /Dashboard Body Container -->
 		
 			<!-- Customers Table -->
 			<div class="table-responsive col-md-6 customer-table">
@@ -394,26 +448,6 @@
 							<tbody>
 								<tr>
 									<td>
-										<table class="table table-striped">
-											<thead>
-												<tr>
-													<th>کد فروشنده</th>
-													<th>تعداد</th>
-													<th>قیمت</th>
-													<th>نوع</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat="request in symbol.sellList">
-													<td>{{request.customerId}}</td>
-													<td>{{request.quantity}}</td>
-													<td>{{request.price}}</td>
-													<td>{{request.type.name}}</td>
-												</tr>
-											</tbody>
-										</table>
-									</td>
-									<td>
 									<table class="table table-striped">
 											<thead>
 												<tr>
@@ -425,6 +459,26 @@
 											</thead>
 											<tbody>
 												<tr ng-repeat="request in symbol.buyList">
+													<td>{{request.customerId}}</td>
+													<td>{{request.quantity}}</td>
+													<td>{{request.price}}</td>
+													<td>{{request.type.name}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+									<td>
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>کد فروشنده</th>
+													<th>تعداد</th>
+													<th>قیمت</th>
+													<th>نوع</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="request in symbol.sellList">
 													<td>{{request.customerId}}</td>
 													<td>{{request.quantity}}</td>
 													<td>{{request.price}}</td>

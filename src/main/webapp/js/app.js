@@ -12,7 +12,9 @@
 		this.newSymbol = {};
 		this.sellRequest = {};
 		this.buyRequest = {};
-		this.types = ['GTC', 'MTC'];
+		this.types = ["GTC", "MTC"];
+		this.increaseCasheRequest = {};
+		
 		
 		
 		//Get Users
@@ -140,22 +142,32 @@
 			    		  price: stockCtrl.sellRequest.price,
 			    		  type: stockCtrl.sellRequest.type} }).then(function(response) {
 					console.log(response);
-					if (response.data.id === -1)
+					if (response.data.hasOwnProperty('id'))
 					{
-						var element = document.getElementById('sellModalError');
-						element.innerHTML = 'درخواست صحیح نمی باشد!';
+						stockCtrl.symbols[stockCtrl.sellRequest.symbolId].sellList.push(response.data);
+						stockCtrl.currentUser.sellList.push(response.data);
+						$('#sellModal').modal('hide');
 					}
 					else
 					{
-						stockCtrl.symbols[stockCtrl.sellRequest.symbolId].sellList.push(response.data);
-						$('#sellModal').modal('hide');
+						var ul = document.createElement('ul');
+						for (var error in response.data)
+						{
+							var li = document.createElement('li');
+							var errText = document.createTextNode(response.data[error]);
+							li.appendChild(errText);
+							ul.appendChild(li);
+						}
+						var element = document.getElementById('sellModalError');
+						element.innerHTML = '';
+						element.appendChild(ul);
 					}
 			});
 		}
 		
 		this.buy = function()
 		{
-			console.log(stockCtrl.sellRequest);
+			console.log(stockCtrl.buyRequest);
 			$http({
 				method: 'POST',
 				url: 'http://localhost:8080/stock/symbol/buy',
@@ -165,15 +177,57 @@
 			    		  price: stockCtrl.buyRequest.price,
 			    		  type: stockCtrl.buyRequest.type} }).then(function(response) {
 					console.log(response);
-					if (response.data.id === -1)
+					if (response.data.hasOwnProperty('id'))
 					{
-						var element = document.getElementById('buyModalError');
-						element.innerHTML = 'درخواست صحیح نمی باشد!';
+						stockCtrl.symbols[stockCtrl.buyRequest.symbolId].buyList.push(response.data);
+						stockCtrl.currentUser.buyList.push(response.data);
+						$('#buyModal').modal('hide');
 					}
 					else
 					{
+						var ul = document.createElement('ul');
+						for (var error in response.data)
+						{
+							var li = document.createElement('li');
+							var errText = document.createTextNode(response.data[error]);
+							li.appendChild(errText);
+							ul.appendChild(li);
+						}
+						var element = document.getElementById('buyModalError');
+						element.innerHTML = '';
+						element.appendChild(ul);
+					}
+			});
+		}
+		
+		this.increaseCashe = function()
+		{
+			console.log(stockCtrl.increaseCashe);
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/customer/increase',
+			    params: { money: stockCtrl.increaseCasheRequest.money,
+			    		  customerId: stockCtrl.currentUser.id} }).then(function(response) {
+					console.log(response);
+					if (response.data.hasOwnProperty('id'))
+					{
 						stockCtrl.symbols[stockCtrl.buyRequest.symbolId].buyList.push(response.data);
+						stockCtrl.currentUser.buyList.push(response.data);
 						$('#buyModal').modal('hide');
+					}
+					else
+					{
+						var ul = document.createElement('ul');
+						for (var error in response.data)
+						{
+							var li = document.createElement('li');
+							var errText = document.createTextNode(response.data[error]);
+							li.appendChild(errText);
+							ul.appendChild(li);
+						}
+						var element = document.getElementById('increaseCasheError');
+						element.innerHTML = '';
+						element.appendChild(ul);
 					}
 			});
 		}

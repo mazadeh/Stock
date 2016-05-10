@@ -7,7 +7,7 @@ public class TypeGTC extends Type
 {
 	static
 	{
-		System.err.println("GTC Type Class Loaded");
+		System.err.println("GTC-Type Class Loaded");
 	}
 	public TypeGTC()
 	{
@@ -23,6 +23,13 @@ public class TypeGTC extends Type
 	}
 	public void transaction(SellBuyRequest request)
 	{
+		if (request.getIsSell())	// It is a sell request
+		{
+		}
+		else	// It is a buy request
+		{
+			System.err.println("Transacting buy request: " + request);
+		}
 	}
 	
 	public String getName()

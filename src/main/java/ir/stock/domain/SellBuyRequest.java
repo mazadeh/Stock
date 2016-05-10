@@ -1,9 +1,14 @@
 package ir.stock.domain;
 
 import java.util.Map;
+// import java.sql.Date;
+// import java.text.SimpleDateFormat;
+// import java.text.ParseException;
 
 public class SellBuyRequest
 {
+	//private SimpleDateFormat format;
+
 	private int id;
 	private int customerId;
 	private int symbolId;
@@ -11,6 +16,8 @@ public class SellBuyRequest
 	private int price;
 	private Type type;
 	private boolean isSell;
+	private String status;
+	private String time;
 	
 	public SellBuyRequest(int id, int customerId, int symbolId, int quantity, int price, String type, boolean isSell)
 	{
@@ -42,6 +49,7 @@ public class SellBuyRequest
 			System.err.println(ex);
 		}
 		
+		//format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
 	
 	public void setId(int id)
@@ -100,5 +108,21 @@ public class SellBuyRequest
 	public boolean getIsSell()
 	{
 		return isSell;
+	}
+	public void setStatus(String status)
+	{
+		this.status = status;
+	}
+	public String getStatus()
+	{
+		return status;
+	}
+	public void setTime(String time)
+	{
+		this.time = time;
+	}
+	public String getTime()
+	{
+		return this.time;
 	}
 }

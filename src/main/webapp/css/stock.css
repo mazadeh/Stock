@@ -68,6 +68,21 @@ select.form-control
 	display: none;
 }
 
+.customer-share-table
+{
+	display: none;
+}
+
+.cashe-box
+{
+	display: none;
+}
+
+.sell-buy-table
+{
+	display: none;
+}
+
 .symbol-table
 {
 	display: none;

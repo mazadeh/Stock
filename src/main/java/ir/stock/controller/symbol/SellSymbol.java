@@ -41,7 +41,7 @@ public class SellSymbol extends HttpServlet
 		}
 		if (symbolId == null || symbolId.equals(""))
 		{
-			errMessages.add("Symbol Id could not be empty");
+			errMessages.add("Symbol ID could not be empty");
 			hasError = true;
 		}
 		if (quantity == null || quantity.equals(""))
@@ -71,13 +71,14 @@ public class SellSymbol extends HttpServlet
 			try
 			{
 				req = repo.addSellBuyRequest(req);
+				out.print(gson.toJson(req));
 			}
 			catch (SQLException ex)
 			{
 				System.err.println("Unable to connect to server when selling : " + req);
 				System.err.println(ex);
+				out.print(gson.toJson(ex));
 			}
-			out.print(gson.toJson(req));
 		}
 		else
 		{

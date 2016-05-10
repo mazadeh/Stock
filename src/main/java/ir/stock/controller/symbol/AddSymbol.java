@@ -42,13 +42,14 @@ public class AddSymbol extends HttpServlet
 			try
 			{
 				symbol = repo.addSymbol(symbolName);
+				out.print(gson.toJson(symbol));
 			}
 			catch (SQLException ex)
 			{
 				System.err.println("Unable to connect to server when adding a new symbol: " + symbolName);
 				System.err.println(ex);
+				out.print(gson.toJson(ex));
 			}
-			out.print(gson.toJson(symbol));
 		}
 		else
 		{

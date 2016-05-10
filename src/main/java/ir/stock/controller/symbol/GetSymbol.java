@@ -47,13 +47,14 @@ public class GetSymbol extends HttpServlet
 			try
 			{
 				symbol = repo.getSymbol(Integer.parseInt(id));
+				out.print(gson.toJson(symbol));
 			}
 			catch (SQLException ex)
 			{
 				System.err.println("Unable to connect to server when getting symbol: " + id);
 				System.err.println(ex);
+				out.print(gson.toJson(ex));
 			}
-			out.print(gson.toJson(symbol));
 		}
 	}
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

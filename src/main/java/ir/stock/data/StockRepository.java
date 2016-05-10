@@ -3,6 +3,7 @@ package ir.stock.data;
 import java.util.*;
 import java.sql.*;
 import ir.stock.domain.*;
+import java.text.SimpleDateFormat;
 
 public class StockRepository
 {
@@ -70,7 +71,8 @@ public class StockRepository
 		{
 			st.executeUpdate("create table sell_buy_request ( id integer IDENTITY PRIMARY KEY, cid integer not null, " +
 							 "sid integer not null, quantity integer not null, " +
-							 "price int not null, type varchar(20), issell boolean not null )" );
+							 "price int not null, type varchar(20), issell boolean not null, " +
+							 "status varchar(20) not null, request_time datetime not null )" );
 			System.err.println("Sell-Buy-Request table created successfully");
 		}
 		
@@ -214,6 +216,8 @@ public class StockRepository
 										 rs.getInt("price"),
 										 rs.getString("type"),
 										 rs.getBoolean("issell") );
+			request.setStatus(rs.getString("status"));
+			request.setTime(rs.getString("request_time"));
 			list.add(request);
 		}
 		con.close();
@@ -236,6 +240,8 @@ public class StockRepository
 										 rs.getInt("price"),
 										 rs.getString("type"),
 										 rs.getBoolean("issell") );
+			request.setStatus(rs.getString("status"));
+			request.setTime(rs.getString("request_time"));
 			list.add(request);
 		}
 		con.close();
@@ -246,18 +252,31 @@ public class StockRepository
 	{
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();
-		st.executeUpdate("insert into sell_buy_request (cid, sid, quantity, price, type, issell)  values (" +
+		java.sql.Date now = new java.sql.Date(System.currentTimeMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(now).toString();
+        
+        request.setTime(time);
+        
+		st.executeUpdate("insert into sell_buy_request (cid, sid, quantity, price, type, " +
+						 "issell, status, request_time)  values (" +
 						 "'" + request.getCustomerId() + "', " +
 						 "'" + request.getSymbolId() + "', " +
 						 "'" + request.getQuantity() + "', " +
 						 "'" + request.getPrice() + "', " +
 						 "'" + request.getType().getName() + "', " +
-						 "'" + request.getIsSell() + "')");
+						 "'" + request.getIsSell() + "', " +
+						 "'" + request.getStatus() + "', " +
+						 "'" + time + "')");
+		
 		ResultSet rs = st.executeQuery("select max(id) as max_id from sell_buy_request");
 		if (rs.next()) {
 			request.setId(rs.getInt("max_id"));
 		}
 		con.close();
+		
+		request.getType().transaction(request);
+		
 		return request;
 	}
 }
