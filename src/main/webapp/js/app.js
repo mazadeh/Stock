@@ -6,6 +6,8 @@
 		var stockCtrl = this;
 		this.users = [];
 		this.symbols = [];
+		this.increaseCasheList = [];
+		this.validatedCashRequest = [];
 		
 		this.currentUser = {firstname: 'میهمان'};
 		this.newUser = {};
@@ -18,16 +20,39 @@
 		
 		
 		//Get Users
+		this.getUsers = function(){
 		$http.get('http://localhost:8080/stock/customer/get').success(function(usersData) {
 		    stockCtrl.users = usersData;
 		    console.log(usersData);
 		});
+		}
 		
 		//Get Symbols
+		this.getSymbols = function(){
 		$http.get('http://localhost:8080/stock/symbol/get').success(function(symbolsData) {
 		    stockCtrl.symbols = symbolsData;
 		    console.log(symbolsData);
 		});
+		}
+		
+		//Get Increase Cashe Request List
+		this.getIncreaseRequests = function(){
+		$http.get('http://localhost:8080/stock/customer/get_increase_request').success(function(requestsData) {
+		    stockCtrl.increaseCasheList = requestsData;
+		    console.log(requestsData);
+		});
+		}
+		
+		//Refresh data
+		this.refresh = function(){
+			stockCtrl.getUsers();
+			stockCtrl.getSymbols();
+			stockCtrl.getIncreaseRequests();
+		}
+		
+		this.refresh();
+		
+		reload = this.refresh;
 		
 		this.signIn = function()
 		{
@@ -205,15 +230,56 @@
 			console.log(stockCtrl.increaseCashe);
 			$http({
 				method: 'POST',
-				url: 'http://localhost:8080/stock/customer/increase',
-			    params: { money: stockCtrl.increaseCasheRequest.money,
+				url: 'http://localhost:8080/stock/customer/add_increase_request',
+			    params: { cashe: stockCtrl.increaseCasheRequest.cashe,
 			    		  customerId: stockCtrl.currentUser.id} }).then(function(response) {
 					console.log(response);
 					if (response.data.hasOwnProperty('id'))
 					{
-						stockCtrl.symbols[stockCtrl.buyRequest.symbolId].buyList.push(response.data);
-						stockCtrl.currentUser.buyList.push(response.data);
-						$('#buyModal').modal('hide');
+						stockCtrl.increaseCasheList.push(response.data);
+						$('#increaseCasheModal').modal('hide');
+					}
+					else
+					{
+						var ul = document.createElement('ul');
+						for (var error in response.data)
+						{
+							var li = document.createElement('li');
+							var errText = document.createTextNode(response.data[error]);
+							li.appendChild(errText);
+							ul.appendChild(li);
+						}
+						var element = document.getElementById('increaseCasheError');
+						element.innerHTML = '';
+						element.appendChild(ul);
+					}
+			});
+		}
+		
+		this.validateCashRequest = function()
+		{
+			console.log(stockCtrl.validatedCashRequest);
+			var listParam = [];
+			for (item in stockCtrl.validatedCashRequest)
+			{
+				if (stockCtrl.validatedCashRequest[item] === true)
+					listParam.push(item);
+			}
+			
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/customer/increase_cashe',
+			    params: { list: listParam } }).then(function(response) {
+					console.log(response);
+					if (!response.data.hasOwnProperty('err'))
+					{
+						for (item in response.data)
+						{
+							stockCtrl.users[item].depositedAmount = response.data[item];
+						}
+						//stockCtrl.increaseCasheList.push(response.data);
+						//$('#increaseCasheModal').modal('hide');
+						stockCtrl.getIncreaseRequests();
 					}
 					else
 					{

@@ -88,6 +88,13 @@ public class StockRepository
 			System.err.println("Admin user added");
 		}
 		
+		if (tables.get("INCREASE_CASHE_REQUEST") == null)
+		{
+			st.executeUpdate("create table increase_cashe_request ( id integer IDENTITY PRIMARY KEY, cid integer not null, " +
+							 "cashe integer not null, status varchar(20) )" );
+			System.err.println("Increase Cashe Request table created successfully");
+		}
+		
 		con.close();
 	}
 	
@@ -278,5 +285,80 @@ public class StockRepository
 		request.getType().transaction(request);
 		
 		return request;
+	}
+	
+	public IncreaseCasheRequest addIncreaseCasheRequest(IncreaseCasheRequest request) throws SQLException
+	{
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		
+		request.setStatus("waiting");
+		st.executeUpdate("insert into increase_cashe_request (cid, cashe, status)  values (" +
+						 "'" + request.getCustomerId() + "', " +
+						 "'" + request.getCashe() + "', " +
+						 "'" + request.getStatus() + "')");
+		
+		ResultSet rs = st.executeQuery("select max(id) as max_id from increase_cashe_request");
+		if (rs.next()) {
+			request.setId(rs.getInt("max_id"));
+		}
+		con.close();
+		
+		return request;
+	}
+	
+	public List<IncreaseCasheRequest> getIncreaseCasheRequestList() throws SQLException
+	{
+		List<IncreaseCasheRequest> list = new ArrayList<IncreaseCasheRequest>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from increase_cashe_request" );
+		while (rs.next()) {
+			IncreaseCasheRequest request;
+			request = new IncreaseCasheRequest(rs.getInt("id"),
+											   rs.getInt("cid"),
+											   rs.getInt("cashe"),
+										 	   rs.getString("status") );
+			list.add(request);
+		}
+		con.close();
+		return list;
+	}
+	
+	public Map<Integer, Integer> increaseCashe(String[] args) throws SQLException
+	{
+		Map<Integer, Integer> newDepositedAmounts = new HashMap<Integer, Integer>();
+		Connection con = DriverManager.getConnection(CONN_STR);
+		Statement st = con.createStatement();
+		ResultSet rs;
+		for (String arg : args)
+		{
+			rs = st.executeQuery("select * from increase_cashe_request where (id='" + arg + "')" );
+			if (rs.next())
+			{
+				int cashe = rs.getInt("cashe");
+				int cid = rs.getInt("cid");
+				rs = st.executeQuery("select * from customer where (id='" + cid + "')" );
+				if (rs.next())
+				{
+					int depositedAmount = rs.getInt("depositedAmount");
+					depositedAmount += cashe;
+					st.executeUpdate("update customer set depositedAmount='" + depositedAmount + "' " +
+									 "where (id='" + cid + "')");
+					st.executeUpdate("update increase_cashe_request set status='" + "done" + "' " +
+									 "where (id='" + arg + "')");
+
+					if (newDepositedAmounts.get(cid) == null)
+					{
+						newDepositedAmounts.put(cid, depositedAmount);
+					}
+					else
+					{
+						newDepositedAmounts.put(cid, depositedAmount + newDepositedAmounts.get(cid));
+					}
+				}
+			}
+		}
+		return newDepositedAmounts;
 	}
 }

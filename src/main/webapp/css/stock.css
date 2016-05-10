@@ -93,11 +93,20 @@ select.form-control
 	display: none;
 }
 
+.increase-cashe-table
+{
+	display: none;
+}
+
 #symbol-list
 {
 	float: right;
 }
 
+.request-item
+{
+	background-color: #2f2;
+}
 @media (min-width: 768px)
 {
 	.navbar-wrapper {

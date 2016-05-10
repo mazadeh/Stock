@@ -78,7 +78,7 @@
           <div class="container">
             <div class="carousel-caption">
               <h1>دسترسی سریع به وضعیت بازار</h1>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">وضعیت بازار را مشاهده کنید</a></p>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button" onclick="showStatus()">وضعیت بازار را مشاهده کنید</a></p>
             </div>
           </div>
         </div>
@@ -290,8 +290,8 @@
 						<form class="form-increase-cashe" ng-submit="stockCtrl.increaseCashe()" novalidate>
 							<h2 class="form-increase-cashe-heading">اطلاعات زیر را وارد کنید.</h2>
 							<label for="cashe" class="control-label">مبلغ درخواستی</label>
-							<input name="cashe" type="text" id="inputcashe" ng-model="stockCtrl.increaseCasheRequest.money" class="form-control" placeholder="Cashe" required autofocus>
-							<button type="submit" class="btn btn-lg btn-primary btn-block">فروش</button>
+							<input name="cashe" type="text" id="inputcashe" ng-model="stockCtrl.increaseCasheRequest.cashe" class="form-control" placeholder="Cashe" required autofocus>
+							<button type="submit" class="btn btn-lg btn-primary btn-block">ارسال درخواست</button>
 						</form>
 					</div>
 					<div class="modal-footer">
@@ -302,6 +302,31 @@
 			</div>
 		</div>
 		<!-- / Sell Modal -->
+		
+		<!-- / Add Symbol Modal -->
+		<div id="addSymbolModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">تعریف نماد جدید</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-add-symbol" ng-submit="stockCtrl.addSymbol()">
+							<h2 class="form-add-symbol-heading">اطلاعات خواسته شده را وارد نمایید.</h2>
+							<label for="inputName" class="control-label">نام نماد</label>
+							<input type="text" id="inputName" ng-model="stockCtrl.newSymbol.name" class="form-control" placeholder="Name" required autofocus>
+							<button class="btn btn-lg btn-primary btn-block" type="submit">افزودن</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<div id="addSymbolModalError" class="text-warning">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- / Add Symbol Modal -->
 		
 		<!-- Dashboard Sidebar -->
 		<div id="#sid" class="dashboard-sidebar">
@@ -319,7 +344,7 @@
         <!-- Cashe Box -->
         <div class="cashe-box">
         	<h2>موجودی حساب</h2>
-        	<h3>{{stockCtrl.currentUser.depositedAmount}} $</h3>
+        	<h3>{{stockCtrl.users[stockCtrl.currentUser.id].depositedAmount}} $</h3>
         	<button><a data-toggle="modal" data-target="#increaseCasheModal" href="#increaseCasheModal">افزایش اعتبار</a></button>
         </div>
         <!-- /Cashe Box -->
@@ -420,11 +445,45 @@
 				</table>
 			</div>
 			<!-- / Customers Table -->
+			
+			<!-- Increase Cashe Table -->
+			<div class="table-responsive col-md-6 increase-cashe-table">
+				<form class="form-validate-increase-cashe" ng-submit="stockCtrl.validateCashRequest()">
+					<table class="table table-striped">
+						<caption>لیست درخواست های افزایش اعتبار</caption>
+						<thead>
+							<tr>
+								<th>انتخاب</th>
+								<th>نام کاربری</th>
+								<th>مبلغ درخواستی</th>
+								<th>وضعیت</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="request in stockCtrl.increaseCasheList">
+								<td><input type="checkbox" ng-model="stockCtrl.validatedCashRequest[request.id]" ng-disabled="request.status==='done'"></td>
+								<td>{{stockCtrl.users[request.customerId].username}}</td>
+								<td>{{request.cashe}}</td>
+								<td>{{request.status}}</td>
+							</tr>
+						</tbody>
+						<div>
+							<div id="increaseCasheError" class="text-warning">
+							</div>
+						</div>
+					</table>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">افزایش اعتبار</button>
+				</form>
+			</div>
+			<!-- /Increase Cashe Table -->
         </div>
+        
+        
 		
 		<!-- Symbols Table -->
 		<div class="table-responsive col-md-6 symbol-table">
-			<button><a data-toggle="modal" data-target="#addSymbolModal" href="#addSymbolModal">add symbol</a></button>
+			<button><a data-toggle="modal" data-target="#addSymbolModal" href="#addSymbolModal">افزودن نماد</a></button>
+			<button onclick="reload();" href="#">بروزرسانی</button>
 			<table class="table table-striped">
 				<caption>لیست نمادهای سامانه</caption>
 				<thead>
@@ -496,32 +555,6 @@
 			</table>
 		</div>
 		<!-- / Symbols Table -->
-    
-		<!-- / Add Symbol Modal -->
-		
-		<div id="addSymbolModal" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">تعریف نماد جدید</h4>
-					</div>
-					<div class="modal-body">
-						<form class="form-add-symbol" ng-submit="stockCtrl.addSymbol()">
-							<h2 class="form-add-symbol-heading">اطلاعات خواسته شده را وارد نمایید.</h2>
-							<label for="inputName" class="control-label">نام نماد</label>
-							<input type="text" id="inputName" ng-model="stockCtrl.newSymbol.name" class="form-control" placeholder="Name" required autofocus>
-							<button class="btn btn-lg btn-primary btn-block" type="submit">افزودن</button>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<div id="addSymbolModalError" class="text-warning">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- / Add Symbol Modal -->
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="../lib/jquery.min.js"></script>

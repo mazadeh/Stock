@@ -17,6 +17,7 @@ var showDashboard = function()
 	$('.customer-share-table').show();
 	$('.sell-buy-table').show();
 	$('.customer-table').show();
+	$('.increase-cashe-table').show();
 }
 
 var hideDashboard = function()
@@ -26,6 +27,7 @@ var hideDashboard = function()
 	$('.customer-share-table').hide();
 	$('.sell-buy-table').hide();
 	$('.customer-table').hide();
+	$('.increase-cashe-table').hide();
 }
 
 var showStatus = function()
@@ -45,3 +47,14 @@ var hideAll = function()
 	hideDashboard();
 	hideStatus();
 }
+
+var reload;
+
+var refresh = function()
+{
+	if (reload != null)
+		reload();
+	setTimeout(refresh, 15000);
+}
+
+refresh();
