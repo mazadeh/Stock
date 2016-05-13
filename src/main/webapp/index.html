@@ -329,33 +329,19 @@
 			</div>
 		</div>
 		<!-- / Add Symbol Modal -->
-		
-		<!-- Dashboard Sidebar -->
-		<div id="#sid" class="dashboard-sidebar">
-			<div class="col-sm-3 col-md-2 sidebar">
-				<ul class="nav nav-sidebar">
-					<li class="active"><a href="#">داشبورد <span class="sr-only">(current)</span></a></li>
-					<li><a href="#">اطلاعات کاربری</a></li>
-					<li><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></li>
-					<li><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></li>
-				</ul>
-			</div>
-        </div>
-        <!-- /Dashboard Sidebar -->
-        
-        <!-- Cashe Box -->
-        <div class="cashe-box">
-        	<h2>موجودی حساب</h2>
-        	<h3>{{stockCtrl.users[stockCtrl.currentUser.id].depositedAmount}} $</h3>
-        	<button><a data-toggle="modal" data-target="#increaseCasheModal" href="#increaseCasheModal">افزایش اعتبار</a></button>
-        </div>
-        <!-- /Cashe Box -->
         
         <!-- Dashboard Body Container -->
         <div class="dashboard-body-container">
-        	<!-- Customer-Share Table -->
-        	<div class="table-responsive col-md-6 customer-share-table">
-        		<table class="table table-striped">
+        	<!-- Sell-Buy Table -->
+			<div class="table-responsive col-md-6">
+				<!-- Cashe Box -->
+				<div class="cashe-box">
+					<h2>موجودی حساب</h2>
+					<h3>{{stockCtrl.users[stockCtrl.currentUser.id].depositedAmount}} $</h3>
+					<button class="btn btn-lg btn-primary btn-block"><a data-toggle="modal" data-target="#increaseCasheModal" href="#increaseCasheModal">درخواست افزایش اعتبار</a></button>
+				</div>
+				<!-- /Cashe Box -->
+				<table class="table table-striped customer-share-table">
 					<caption>سهام های شما</caption>
 					<thead>
 						<tr>
@@ -367,17 +353,11 @@
 						<tr ng-repeat="symbol in stockCtrl.currentUser.shareList">
 							<td>{{symbol.id}}</td>
 							<td>{{symbol.name}}</td>
-							<td>
 						</tr>
 					</tbody>
 				</table>
-        	</div>
-        	<!-- /Customer-Share Table -->
-        	
-        	<!-- Sell-Buy Table -->
-			<div class="table-responsive col-md-6 sell-buy-table">
-				<caption><p>لیست معاملات شما</p></caption>
-				<table class="table table-striped">
+				<caption><p class="sell-table buy-table">لیست معاملات شما</p></caption>
+				<table class="table table-striped sell-table">
 					<caption>صف خرید</caption>
 					<thead>
 						<tr>
@@ -398,7 +378,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<table class="table table-striped">
+				<table class="table table-striped buy-table">
 					<caption>صف فروش</caption>
 					<thead>
 						<tr>
@@ -419,12 +399,7 @@
 						</tr>
 					</tbody>
 				</table>
-			</div>
-			<!-- /Dashboard Body Container -->
-		
-			<!-- Customers Table -->
-			<div class="table-responsive col-md-6 customer-table">
-				<table class="table table-striped">
+				<table class="table table-striped customer-table">
 					<caption>لیست کاربران سامانه</caption>
 					<thead>
 						<tr>
@@ -441,16 +416,26 @@
 							<td>{{user.firstname}}</td>
 							<td>{{user.lastname}}</td>
 							<td>{{user.depositedAmount}}</td>
-							<td>{{user.shareList}}</td>
+							<td>
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>نام سهام</th>
+											<th>تعداد سهام</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="symbol in stockCtrl.shareList">
+											<td>{{symbol.name}}</td>
+											<td>{{symbol.count}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
-			<!-- / Customers Table -->
-			
-			<!-- Increase Cashe Table -->
-			<div class="table-responsive col-md-6 increase-cashe-table">
-				<form class="form-validate-increase-cashe" ng-submit="stockCtrl.validateCashRequest()">
+				<form class="form-validate-increase-cashe increase-cashe-table" ng-submit="stockCtrl.validateCashRequest()">
 					<table class="table table-striped">
 						<caption>لیست درخواست های افزایش اعتبار</caption>
 						<thead>
@@ -477,9 +462,9 @@
 					<button class="btn btn-lg btn-primary btn-block" type="submit">افزایش اعتبار</button>
 				</form>
 			</div>
-			<!-- /Increase Cashe Table -->
+			<!-- /Dashboard Body Container -->
         </div>
-        
+        <!-- /Dashboard -->
         
 		
 		<!-- Symbols Table -->

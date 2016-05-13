@@ -312,7 +312,7 @@ public class StockRepository
 		List<IncreaseCasheRequest> list = new ArrayList<IncreaseCasheRequest>();
 		Connection con = DriverManager.getConnection(CONN_STR);
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select * from increase_cashe_request" );
+		ResultSet rs = st.executeQuery("select * from increase_cashe_request order by status, cid, cashe");
 		while (rs.next()) {
 			IncreaseCasheRequest request;
 			request = new IncreaseCasheRequest(rs.getInt("id"),

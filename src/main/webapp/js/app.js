@@ -44,6 +44,12 @@
 		});
 		}
 		
+		this.announce = function(data, type)
+		{
+			var str = 'درخواست ' + type + ' شما با کد رهگیری ' + data.id + ' در سامانه ثبت گردید'
+			alert(str);
+		}
+		
 		//Refresh data
 		this.refresh = function(){
 			stockCtrl.getUsers();
@@ -148,6 +154,7 @@
 					{
 						stockCtrl.symbols.push(response.data);
 						$('#addSymbolModal').modal('hide');
+						stockCtrl.announce(response.data, 'افزودن نماد');
 					}
 					else
 					{
@@ -184,6 +191,7 @@
 						stockCtrl.symbols[stockCtrl.sellRequest.symbolId].sellList.push(response.data);
 						stockCtrl.currentUser.sellList.push(response.data);
 						$('#sellModal').modal('hide');
+						stockCtrl.announce(response.data, 'فروش');
 					}
 					else
 					{
@@ -219,6 +227,7 @@
 						stockCtrl.symbols[stockCtrl.buyRequest.symbolId].buyList.push(response.data);
 						stockCtrl.currentUser.buyList.push(response.data);
 						$('#buyModal').modal('hide');
+						stockCtrl.announce(response.data, 'خرید');
 					}
 					else
 					{
@@ -250,6 +259,7 @@
 					{
 						stockCtrl.increaseCasheList.push(response.data);
 						$('#increaseCasheModal').modal('hide');
+						stockCtrl.announce(response.data, 'افزایش اعتبار');
 					}
 					else
 					{

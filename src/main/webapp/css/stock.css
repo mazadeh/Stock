@@ -53,21 +53,6 @@ select.form-control
   float: right;
 }
 
-.nav-sidebar {
-  padding-right: 0;
-}
-.nav-sidebar > .active > a,
-.nav-sidebar > .active > a:hover,
-.nav-sidebar > .active > a:focus {
-  color: #fff;
-  background-color: #428bca;
-}
-
-.dashboard-sidebar
-{
-	display: none;
-}
-
 .customer-share-table
 {
 	display: none;
@@ -78,7 +63,18 @@ select.form-control
 	display: none;
 }
 
-.sell-buy-table
+.btn-block
+{
+	width: 40%;
+	float: center;
+}
+
+.sell-table
+{
+	display: none;
+}
+
+.buy-table
 {
 	display: none;
 }
@@ -107,9 +103,27 @@ select.form-control
 {
 	background-color: #2f2;
 }
+
+th
+{
+	text-align: center;
+}
+caption
+{
+	text-align: right;
+}
+
 @media (min-width: 768px)
 {
-	.navbar-wrapper {
+	.navbar-wrapper
+	{
 		  margin: 20px;
 	}
+	
+	.table-responsive
+	{
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+
 }

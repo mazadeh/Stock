@@ -15,7 +15,8 @@ var showDashboard = function()
 	$('.dashboard-sidebar').show();
 	$('.cashe-box').show();
 	$('.customer-share-table').show();
-	$('.sell-buy-table').show();
+	$('.sell-table').show();
+	$('.buy-table').show();
 	$('.customer-table').show();
 	$('.increase-cashe-table').show();
 }
@@ -25,7 +26,8 @@ var hideDashboard = function()
 	$('.dashboard-sidebar').hide();
 	$('.cashe-box').hide();
 	$('.customer-share-table').hide();
-	$('.sell-buy-table').hide();
+	$('.sell-table').hide();
+	$('.buy-table').hide();
 	$('.customer-table').hide();
 	$('.increase-cashe-table').hide();
 }
