@@ -6,11 +6,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>سامانه معاملات بورس و اوراق بهادارد</title>
 		<!-- Bootstrap -->
-		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="../css/stock.css">
+		<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="./css/stock.css">
 		<!-- Favicon -->
-		<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-		<script type="text/javascript" src="../js/actions.js"></script>
+		<link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+		<script type="text/javascript" src="./js/actions.js"></script>
 	</head>
 	<body ng-controller="StockController as stockCtrl">
 		<div class="navbar-wrapper">
@@ -27,7 +27,7 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="#">
-						<img alt="Brand" src="../images/logo.ico">
+						<img alt="Brand" src="./images/logo.ico">
 					</a>
 					<div class="nav navbar-nav navbar-brand">
             <a href="#">سلام {{stockCtrl.currentUser.firstname}}</a>
@@ -42,13 +42,15 @@
 						<li class="dropdown">
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">بخش کاربری <span class="caret"></span></a>
 						  <ul class="dropdown-menu">
-						    <li><a href="#" onclick="showDashboard()">داشبورد</a></li>
-								<li><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></li>
-								<li><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></li>
-						    <li role="separator" class="divider"></li>
-								<li><a data-toggle="modal" data-target="#signInModal" href="#signInModal">ورود</a></li>
-								<li><a data-toggle="modal" data-target="#signUpModal" href="#signUpModal">ثبت نام</a></li>
-						    <li><a href="#">خروج</a></li>
+						    <li ng-show="stockCtrl.isUser"><a href="#" onclick="showDashboard()">داشبورد</a></li>
+							<li ng-show="stockCtrl.isUser"><a data-toggle="modal" data-target="#buyModal" href="#buyModal">خرید سهام</a></li>
+							<li ng-show="stockCtrl.isUser"><a data-toggle="modal" data-target="#sellModal" href="#sellModal">فروش سهام</a></li>
+						    
+						    <li ng-show="stockCtrl.isUser" role="separator" class="divider"></li>
+							
+							<li ng-show="!stockCtrl.isUser"><a data-toggle="modal" data-target="#signInModal" href="#signInModal">ورود</a></li>
+							<li ng-show="!stockCtrl.isUser"><a data-toggle="modal" data-target="#signUpModal" href="#signUpModal">ثبت نام</a></li>
+						    <li ng-show="stockCtrl.isUser" ng-click="stockCtrl.signOut()"><a href="#">خروج</a></li>
 						  </ul>
 						</li>
 						<li><a href="#" onclick="showStatus()">وضعیت بازار</a></li>
@@ -74,7 +76,7 @@
       <div class="carousel-inner" role="listbox">
       
         <div class="item active">
-          <img class="first-slide" src="../images/b1.jpg" alt="First slide">
+          <img class="first-slide" src="./images/b1.jpg" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>دسترسی سریع به وضعیت بازار</h1>
@@ -83,7 +85,7 @@
           </div>
         </div>
         <div class="item">
-          <img class="second-slide" src="../images/b2.jpg" alt="Second slide">
+          <img class="second-slide" src="./images/b2.jpg" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>امکان ایجاد ناحیه ی کاربری و انجام معاملات</h1>
@@ -93,7 +95,7 @@
         </div>
         
         <div class="item">
-          <img class="third-slide" src="../images/carousel.gif" alt="Third slide">
+          <img class="third-slide" src="./images/carousel.gif" alt="Third slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>GitHub</h1>
@@ -103,7 +105,7 @@
           </div>
         </div>
         <div class="item">
-          <img class="fourth-slide" src="../images/carousel.gif" alt="Fourth slide">
+          <img class="fourth-slide" src="./images/carousel.gif" alt="Fourth slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Angular.JS</h1>
@@ -114,7 +116,7 @@
           </div>
         </div>
         <div class="item">
-          <img class="fifth-slide" src="../images/carousel.gif" alt="Fifth slide">
+          <img class="fifth-slide" src="./images/carousel.gif" alt="Fifth slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Maven, A good tool for MVC</h1>
@@ -557,10 +559,10 @@
 		<!-- / Symbols Table -->
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="../lib/jquery.min.js"></script>
-		<script type="text/javascript" src="../lib/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../lib/angular.min.js"></script>
-		<script type="text/javascript" src="../lib/angular-messages.min.js"></script>
-		<script type="text/javascript" src="../js/app.js"></script>
+		<script src="./lib/jquery.min.js"></script>
+		<script type="text/javascript" src="./lib/bootstrap.min.js"></script>
+		<script type="text/javascript" src="./lib/angular.min.js"></script>
+		<script type="text/javascript" src="./lib/angular-messages.min.js"></script>
+		<script type="text/javascript" src="./js/app.js"></script>
 	</body>
 </html>

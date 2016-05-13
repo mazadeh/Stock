@@ -17,7 +17,8 @@
 		this.types = ["GTC", "MTC"];
 		this.increaseCasheRequest = {};
 		
-		
+		this.isAdmin = false;
+		this.isGuest = true;
 		
 		//Get Users
 		this.getUsers = function(){
@@ -76,6 +77,9 @@
 						console.log('Hello ' + stockCtrl.currentUser.firstname);
 						$('#signInModal').modal('hide');
 						showDashboard();
+						stockCtrl.isUser = true;
+						if (user.id === 0)
+							stockCtrl.isAdmin = true;
 					}
 					else
 					{
@@ -105,6 +109,7 @@
 						stockCtrl.currentUser = response.data;
 						stockCtrl.users.push(stockCtrl.currentUser);
 						$('#signUpModal').modal('hide');
+						stockCtrl.isUser = true;
 					}
 					else
 					{
@@ -124,6 +129,13 @@
 			});
 		}
 		
+		this.signOut = function()
+		{
+			stockCtrl.isUser = false;
+			stockCtrl.isAdmin = false;
+			stockCtrl.currentUser = {firstname: 'میهمان'};
+			showHome();
+		}
 		
 		this.addSymbol = function()
 		{
