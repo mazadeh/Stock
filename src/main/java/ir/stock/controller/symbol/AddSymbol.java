@@ -29,10 +29,16 @@ public class AddSymbol extends HttpServlet
 		List<String> errMessages = new ArrayList<String>();
 
 		String symbolName = request.getParameter("name");
+		String ownerId = request.getParameter("owner");
 		
 		if (symbolName == null || symbolName.equals(""))
 		{
 			errMessages.add("Name could not be empty");
+			hasError = true;
+		}
+		if (ownerId == null || ownerId.equals(""))
+		{
+			errMessages.add("Owner ID could not be empty");
 			hasError = true;
 		}
 
@@ -41,7 +47,7 @@ public class AddSymbol extends HttpServlet
 			Symbol symbol = null;
 			try
 			{
-				symbol = repo.addSymbol(symbolName);
+				symbol = repo.addSymbol(symbolName, ownerId);
 				out.print(gson.toJson(symbol));
 			}
 			catch (SQLException ex)

@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class Customer
 {
+	public final static String OWNER = "owner";
+	
 	private int id;
 	private String firstname;
 	private String lastname;
@@ -17,6 +19,12 @@ public class Customer
 	
 	private List<SellBuyRequest> sellList;
 	private List<SellBuyRequest> buyList;
+	
+	private List<String> roles;
+	
+	public boolean isOwner;
+	
+	private List<Integer> ownedSymboles;
 	
 	public Customer(int id, String firstname, String lastname, String username, String password, int depositedAmount)
 	{
@@ -130,5 +138,48 @@ public class Customer
 	public List<SellBuyRequest> getSellList()
 	{
 		return this.sellList;
+	}
+	
+	public void addRole(String role)
+	{
+		if (this.roles == null)
+			roles = new ArrayList<String>();
+		
+		this.roles.add(role);
+	}
+	
+	public void setRoles(List<String> roles)
+	{
+		this.roles = roles;
+		
+		for (String role : roles)
+		{
+			if (role.equals(OWNER))
+			{
+				this.isOwner = true;
+			}
+		}
+	}
+	
+	public List<String> getRoles()
+	{
+		return this.roles;
+	}
+	
+	public void setOwnedSymboles(List<Integer> ownedSymboles)
+	{
+		this.ownedSymboles = ownedSymboles;
+	}
+	
+	public void addOwnedSymbol(Integer ownedSymbol)
+	{
+		if (this.ownedSymboles == null)
+			this.ownedSymboles = new ArrayList<Integer>();
+		this.ownedSymboles.add(ownedSymbol);
+	}
+	
+	public List<Integer> getOwnedSymboles()
+	{
+		return this.ownedSymboles;
 	}
 }

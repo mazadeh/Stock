@@ -10,15 +10,23 @@
 		this.validatedCashRequest = [];
 		
 		this.currentUser = {firstname: 'میهمان'};
+		this.selectedUser = null;
 		this.newUser = {};
 		this.newSymbol = {};
 		this.sellRequest = {};
 		this.buyRequest = {};
-		this.types = ["GTC", "MTC"];
+		this.types = ['GTC', 'MTC'];
 		this.increaseCasheRequest = {};
 		
+		this.isUser = false;
 		this.isAdmin = false;
+		this.isOwner = false;
+		this.isFinancialManager = false;
 		this.isGuest = true;
+		
+		this.selectedSymbol = 0;
+		
+		this.roles = [{id: 'user', name:'کاربر معمولی'}, {id: 'admin', name: 'مدیر سیستم'}, {id: 'financial_manager', name:'مسول مالی'}, {id: 'owner', name: 'مالک شرکت'}]
 		
 		//Get Users
 		this.getUsers = function(){
@@ -67,31 +75,48 @@
 			//console.log(stockCtrl.currentUser);
 			$http({
 				method: 'POST',
-				url: 'http://localhost:8080/stock/customer/get', 
-		    params: { username: stockCtrl.currentUser.username }
+				url: 'http://localhost:8080/stock/customer/login', 
+		    params: { username: stockCtrl.currentUser.username,
+		    		  password: stockCtrl.currentUser.password }
 				}).then(function(response) {
 					var user = response.data;
 					if (user === 'null')
 					{
 						console.log('Customer does not exist!');
 						var element = document.getElementById('signInModalError');
-						element.innerHTML = 'چنین کاربری تعریف نشده است!';
+						element.innerHTML = 'چنین کاربری تعریف نشده است یا گذرواژه ناصحیح است!';
 					}
-					else if (stockCtrl.currentUser.password === user.password)
+					else
 					{
 						stockCtrl.currentUser = user;
 						console.log('Hello ' + stockCtrl.currentUser.firstname);
 						$('#signInModal').modal('hide');
 						showDashboard();
-						stockCtrl.isUser = true;
-						if (user.id === 0)
-							stockCtrl.isAdmin = true;
-					}
-					else
-					{
-						console.log('Wrong password!');
-						var element = document.getElementById('signInModalError');
-						element.innerHTML = 'گذرواژه صحیح نمی باشد!';
+						stockCtrl.isUser = false;
+						stockCtrl.isAdmin = false;
+						stockCtrl.isOwner = false;
+						stockCtrl.isFinancialManager = false;
+						stockCtrl.isGuest = true;
+						for (var role in stockCtrl.currentUser.roles)
+						{
+							stockCtrl.isGuest = false;
+							console.log('user is : ' + stockCtrl.currentUser.roles[role]);
+							switch (stockCtrl.currentUser.roles[role])
+							{
+							case 'user':
+								stockCtrl.isUser = true;
+								break;
+							case 'admin':
+								stockCtrl.isAdmin = true;
+								break;
+							case 'owner':
+								stockCtrl.isOwner = true;
+								break;
+							case 'finance manager':
+								stockCtrl.isFinancialManager = true;
+								break;
+							}
+						}
 					}
 					// alert(response);
 					//console.log(user);
@@ -139,8 +164,12 @@
 		{
 			stockCtrl.isUser = false;
 			stockCtrl.isAdmin = false;
+			stockCtrl.isFinancialManager = false;
+			stockCtrl.isOwner = false;
+			stockCtrl.isGuest = true;
 			stockCtrl.currentUser = {firstname: 'میهمان'};
 			showHome();
+			$('#signOutModal').modal('show');
 		}
 		
 		this.addSymbol = function()
@@ -148,7 +177,7 @@
 			$http({
 				method: 'POST',
 				url: 'http://localhost:8080/stock/symbol/add',
-			    params: { name: stockCtrl.newSymbol.name } }).then(function(response) {
+			    params: { name: stockCtrl.newSymbol.name , owner: stockCtrl.currentUser.id} }).then(function(response) {
 					console.log(response);
 					if (response.data.hasOwnProperty('id'))
 					{
@@ -316,6 +345,63 @@
 						var element = document.getElementById('increaseCasheError');
 						element.innerHTML = '';
 						element.appendChild(ul);
+					}
+			});
+		}
+		
+		this.addRoleModal = function(user)
+		{
+			stockCtrl.selectedUser = user;
+			//console.log(user);
+			$('#addRoleModal').modal('show');
+		}
+		
+		
+		this.removeRoleModal = function(user, role)
+		{
+			stockCtrl.selectedUser = user;
+			stockCtrl.selectedUser.selectedRole = role;
+			$('#removeRoleModal').modal('show');
+		}
+		
+		this.addRole = function()
+		{
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/customer/add_role',
+			    params: { username: stockCtrl.selectedUser.username,
+			    		  role: stockCtrl.selectedUser.selectedRole} }).then(function(response) {
+					console.log(response);
+					if (response === null)
+					{
+						var element = document.getElementById('increaseCasheError');
+						element.innerHTML = 'خطا در افزایش نقش!';
+					}
+					else
+					{
+						stockCtrl.users[stockCtrl.selectedUser.id].roles.push(stockCtrl.selectedUser.selectedRole);
+						$('#addRoleModal').modal('hide');
+					}
+			});
+		}
+		
+		this.removeRole = function()
+		{
+			$http({
+				method: 'POST',
+				url: 'http://localhost:8080/stock/customer/remove_role',
+			    params: { username: stockCtrl.selectedUser.username,
+			    		  role: stockCtrl.selectedUser.selectedRole} }).then(function(response) {
+					console.log(response);
+					if (response === null)
+					{
+						var element = document.getElementById('increaseCasheError');
+						element.innerHTML = 'خطا در حذف نقش!';
+					}
+					else
+					{
+						stockCtrl.users[stockCtrl.selectedUser.id].roles[stockCtrl.selectedUser.selectedRole].delete;
+						$('#removeRoleModal').modal('hide');
 					}
 			});
 		}
