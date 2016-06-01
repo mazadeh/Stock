@@ -15,7 +15,7 @@
 		this.newSymbol = {};
 		this.sellRequest = {};
 		this.buyRequest = {};
-		this.types = ['GTC', 'MTC'];
+		this.types = ['GTC', 'IOC', 'MPO'];
 		this.increaseCasheRequest = {};
 		
 		this.isUser = false;
